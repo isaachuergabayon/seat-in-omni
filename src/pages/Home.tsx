@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useData } from '../context/DataContext'
-import { useSharePointUser } from '../hooks/useSharePointUser'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
 import { formatDate, resolveSeatsForDate } from '../utils'
 
 export default function Home() {
   const { data, loading } = useData()
-  const { isAdmin } = useSharePointUser()
   const [date, setDate] = useState(formatDate(new Date()))
 
   if (loading || !data) {
@@ -31,14 +29,12 @@ export default function Home() {
             <h1 className="text-lg font-bold text-gray-800">Mapa de Sitios</h1>
             <p className="text-xs text-gray-400">Omni Office</p>
           </div>
-          {isAdmin && (
-            <Link
+          <Link
               to="/admin"
               className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
             >
               Admin
             </Link>
-          )}
         </div>
         <div className="flex items-center gap-4 text-sm mt-2 flex-wrap">
           <span className="text-xs text-gray-500 font-medium">.COM:</span>
