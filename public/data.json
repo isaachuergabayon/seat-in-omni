@@ -654,8 +654,8 @@
         },
         {
           "seatId": "left-top-2",
-          "personId": null,
-          "status": "free"
+          "personId": "marcos-afmin4xs",
+          "status": "occupied"
         },
         {
           "seatId": "left-bottom-1",
