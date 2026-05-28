@@ -81,6 +81,26 @@ export default function Home() {
         <DateNavigator date={date} onChange={setDate} />
         {/* Sin onUpdate → popover solo lectura */}
         <OfficeMap seats={resolvedSeats} people={data.people} />
+
+        {/* Leyenda */}
+        <div className="flex justify-center gap-6 mt-6 pb-8 text-xs text-gray-500">
+          <span className="flex items-center gap-1.5">
+            <span className="w-4 h-4 rounded bg-green-100 border-2 border-green-300 inline-block" />
+            Libre
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-4 h-4 rounded bg-red-100 border-2 border-red-300 inline-block" />
+            Ocupado
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-4 h-4 rounded bg-gray-100 border-2 border-gray-300 inline-block" />
+            Ausente
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
+            Rotativo
+          </span>
+        </div>
       </main>
     </div>
   )
