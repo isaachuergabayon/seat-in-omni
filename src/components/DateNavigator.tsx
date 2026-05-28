@@ -9,8 +9,11 @@ interface Props {
 
 export default function DateNavigator({ date, onChange }: Props) {
   const { data } = useData()
+  const today = formatDate(new Date())
+  const isToday = date === today
 
   const prev = () => {
+    if (isToday) return
     const d = parseDate(date)
     d.setDate(d.getDate() - 1)
     onChange(formatDate(d))
@@ -29,7 +32,12 @@ export default function DateNavigator({ date, onChange }: Props) {
       <div className="flex items-center gap-4">
         <button
           onClick={prev}
-          className="px-4 py-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold text-lg transition"
+          disabled={isToday}
+          className={`px-4 py-2 rounded-lg font-bold text-lg transition
+            ${isToday
+              ? 'bg-gray-100 text-gray-300 cursor-not-allowed'
+              : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+            }`}
         >
           ←
         </button>
@@ -37,6 +45,7 @@ export default function DateNavigator({ date, onChange }: Props) {
           <input
             type="date"
             value={date}
+            min={today}
             onChange={(e) => onChange(e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-1 text-sm text-gray-600 cursor-pointer"
           />
