@@ -27,12 +27,14 @@ export default function DeskGroup({ deskId, seats, label, people, assignedPerson
   if (isVertical) {
     // Columna izquierda: top-1 arriba, bottom-1 abajo
     // Columna derecha:   top-2 arriba, bottom-2 abajo
-    const leftCol = seats
-      .filter((s) => s.position.endsWith('-1'))
-      .sort((a, b) => a.position.localeCompare(b.position))
-    const rightCol = seats
-      .filter((s) => s.position.endsWith('-2'))
-      .sort((a, b) => a.position.localeCompare(b.position))
+    // Orden: top antes que bottom
+    const sortVertical = (a: ResolvedSeat, b: ResolvedSeat) => {
+      const rowA = a.position.startsWith('top') ? 0 : 1
+      const rowB = b.position.startsWith('top') ? 0 : 1
+      return rowA - rowB
+    }
+    const leftCol = seats.filter((s) => s.position.endsWith('-1')).sort(sortVertical)
+    const rightCol = seats.filter((s) => s.position.endsWith('-2')).sort(sortVertical)
     return (
       <div className="flex flex-col items-center gap-2 w-full md:w-auto">
         <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">{label}</span>
