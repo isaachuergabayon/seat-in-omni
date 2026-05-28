@@ -61,20 +61,6 @@ export default function Home() {
             <span className="text-gray-600">{techOccupied} ocupados</span>
           </span>
         </div>
-        <div className="flex items-center gap-5 text-xs text-gray-400 mt-2">
-          <span className="flex items-center gap-1.5">
-            <span className="w-4 h-4 rounded bg-green-100 border-2 border-green-300 inline-block" />
-            Libre
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-4 h-4 rounded bg-red-100 border-2 border-red-300 inline-block" />
-            Ocupado
-          </span>
-          <span className="flex items-center gap-1.5">
-            <span className="w-4 h-4 rounded bg-gray-100 border-2 border-gray-300 inline-block" />
-            Ausente
-          </span>
-        </div>
       </header>
 
       <main>
