@@ -4,8 +4,9 @@ import { useData } from '../context/DataContext'
 import { exportDataAsJson, formatDate, generateId, resolveSeatsForDate, resolveSeatsForTemplate } from '../utils'
 import { AppData, Assignment, SeatStatus, TemplateAssignment } from '../types'
 import OfficeMap from '../components/OfficeMap'
+import { clearToken, getStoredToken, publishToGitHub, saveToken } from '../api/githubCommit'
 
-type Tab = 'week' | 'exceptions' | 'people' | 'specialDays' | 'templates'
+type Tab = 'week' | 'exceptions' | 'people' | 'specialDays' | 'templates' | 'config'
 
 const WEEKDAY_IDS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 const WEEKDAY_LABELS: Record<string, string> = {
@@ -23,6 +24,9 @@ export default function Admin() {
   const [activeWeekday, setActiveWeekday] = useState<string>('monday')
   const [date, setDate] = useState(formatDate(new Date()))
   const [saved, setSaved] = useState(false)
+  const [publishing, setPublishing] = useState(false)
+  const [publishStatus, setPublishStatus] = useState<'idle' | 'ok' | 'error'>('idle')
+  const [publishError, setPublishError] = useState('')
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -32,6 +36,30 @@ export default function Admin() {
     setData(newData)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handlePublish = async () => {
+    const token = getStoredToken()
+    if (!token) {
+      setPublishError('No hay token configurado. Ve a la pestaña Configuración.')
+      setPublishStatus('error')
+      setTimeout(() => setPublishStatus('idle'), 4000)
+      return
+    }
+    setPublishing(true)
+    setPublishStatus('idle')
+    try {
+      const json = JSON.stringify(data, null, 2)
+      await publishToGitHub(json, token)
+      setPublishStatus('ok')
+      setTimeout(() => setPublishStatus('idle'), 3000)
+    } catch (e) {
+      setPublishError(e instanceof Error ? e.message : 'Error desconocido')
+      setPublishStatus('error')
+      setTimeout(() => setPublishStatus('idle'), 5000)
+    } finally {
+      setPublishing(false)
+    }
   }
 
   // ─── PEOPLE ───────────────────────────────────────────────────────────────
@@ -137,11 +165,20 @@ export default function Admin() {
           </div>
           <div className="flex items-center gap-2">
             {saved && <span className="text-green-400 text-xs">✓ Guardado</span>}
+            {publishStatus === 'ok' && <span className="text-green-400 text-xs">✓ Publicado</span>}
+            {publishStatus === 'error' && <span className="text-red-400 text-xs max-w-[160px] truncate" title={publishError}>{publishError}</span>}
             <button
               onClick={() => exportDataAsJson(data)}
               className="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 rounded-lg text-xs transition"
             >
               Exportar
+            </button>
+            <button
+              onClick={handlePublish}
+              disabled={publishing}
+              className="px-2.5 py-1.5 bg-green-600 hover:bg-green-500 rounded-lg text-xs transition disabled:opacity-40"
+            >
+              {publishing ? 'Publicando...' : 'Publicar'}
             </button>
             <Link
               to="/"
@@ -162,6 +199,7 @@ export default function Admin() {
             ['people', 'Personas'],
             ['specialDays', 'Días Especiales'],
             ['templates', 'Plantillas'],
+            ['config', 'Configuración'],
           ] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
@@ -365,6 +403,13 @@ export default function Admin() {
             )}
           </div>
         )}
+        {/* ── CONFIGURACIÓN ── */}
+        {tab === 'config' && (
+          <div className="max-w-lg mx-auto">
+            <TokenConfig />
+          </div>
+        )}
+
       </div>
     </div>
   )
@@ -412,5 +457,73 @@ function SaveAsTemplateForm({ onSave }: { onSave: (name: string) => void }) {
         Guardar plantilla
       </button>
     </form>
+  )
+}
+
+function TokenConfig() {
+  const [token, setToken] = useState(getStoredToken)
+  const [saved, setSaved] = useState(false)
+
+  const handleSave = (e: React.FormEvent) => {
+    e.preventDefault()
+    saveToken(token.trim())
+    setSaved(true)
+    setTimeout(() => setSaved(false), 2000)
+  }
+
+  const handleClear = () => {
+    clearToken()
+    setToken('')
+  }
+
+  const hasToken = !!getStoredToken()
+
+  return (
+    <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+      <div>
+        <h2 className="text-sm font-bold text-gray-800 mb-1">Token de GitHub</h2>
+        <p className="text-xs text-gray-400">
+          Necesario para publicar cambios directamente desde la app. El token se guarda solo en este navegador, nunca en el código.
+        </p>
+      </div>
+
+      {hasToken && (
+        <div className="flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg text-xs text-green-700">
+          ✓ Token configurado
+        </div>
+      )}
+
+      <form onSubmit={handleSave} className="space-y-3">
+        <input
+          type="password"
+          value={token}
+          onChange={(e) => setToken(e.target.value)}
+          placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+          className="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm font-mono"
+        />
+        <div className="flex gap-2">
+          <button
+            type="submit"
+            disabled={!token.trim()}
+            className="px-4 py-2 bg-gray-800 text-white rounded-lg text-sm hover:bg-gray-700 transition disabled:opacity-40"
+          >
+            {saved ? '✓ Guardado' : 'Guardar token'}
+          </button>
+          {hasToken && (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="px-4 py-2 bg-red-50 hover:bg-red-100 text-red-600 text-sm rounded-lg border border-red-200 transition"
+            >
+              Borrar token
+            </button>
+          )}
+        </div>
+      </form>
+
+      <p className="text-xs text-gray-400">
+        Crea un token en GitHub → Settings → Developer settings → Personal access tokens → Classic → scope: <code className="bg-gray-100 px-1 rounded">public_repo</code>
+      </p>
+    </div>
   )
 }
