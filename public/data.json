@@ -963,8 +963,8 @@
         },
         {
           "seatId": "tech-1",
-          "personId": "isaac",
-          "status": "occupied"
+          "personId": null,
+          "status": "free"
         },
         {
           "seatId": "tech-2",
