@@ -1,4 +1,4 @@
-export type SeatType = 'fixed' | 'hot'
+export type SeatType = 'fixed' | 'rotativo'
 export type SeatStatus = 'occupied' | 'absent' | 'free'
 export type DeskId = 'left' | 'center' | 'right' | 'tech-desk'
 export type BuildingId = 'com' | 'tech'

@@ -48,7 +48,7 @@ export default function SeatCard({ seat, onUpdate, people = [], assignedPersonId
           ${isEditable ? 'cursor-pointer hover:brightness-95 active:scale-95' : 'cursor-default'}
         `}
       >
-        {seat.type === 'hot' && (
+        {seat.type === 'rotativo' && (
           <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-400" />
         )}
         <div className="text-sm font-bold leading-tight break-words">{label}</div>
@@ -93,7 +93,7 @@ function ReadPopover({ seat }: { seat: ResolvedSeat }) {
         </span>
       </div>
       {seat.personName && <div className="font-semibold text-gray-700">{seat.personName}</div>}
-      {seat.type === 'hot' && <div className="text-emerald-500">● sitio caliente</div>}
+      {seat.type === 'rotativo' && <div className="text-emerald-500">● rotativo</div>}
     </div>
   )
 }

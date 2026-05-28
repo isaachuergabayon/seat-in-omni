@@ -6,7 +6,7 @@
       "desk": "left",
       "position": "top-1",
       "label": "CRIS",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "left-top-2",
@@ -14,7 +14,7 @@
       "desk": "left",
       "position": "top-2",
       "label": null,
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "left-bottom-1",
@@ -22,7 +22,7 @@
       "desk": "left",
       "position": "bottom-1",
       "label": "ALAN",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "left-bottom-2",
@@ -30,7 +30,7 @@
       "desk": "left",
       "position": "bottom-2",
       "label": "ROBERTO",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "center-top-1",
@@ -78,7 +78,7 @@
       "desk": "center",
       "position": "bottom-2",
       "label": "SERGIO",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "center-bottom-3",
@@ -86,7 +86,7 @@
       "desk": "center",
       "position": "bottom-3",
       "label": "ISAAC",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "center-bottom-4",
@@ -102,7 +102,7 @@
       "desk": "right",
       "position": "top-1",
       "label": "ALBERTO",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "right-top-2",
@@ -110,7 +110,7 @@
       "desk": "right",
       "position": "top-2",
       "label": null,
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "right-bottom-1",
@@ -118,7 +118,7 @@
       "desk": "right",
       "position": "bottom-1",
       "label": "RAMON",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "right-bottom-2",
@@ -126,7 +126,7 @@
       "desk": "right",
       "position": "bottom-2",
       "label": "ADRIANA",
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "tech-1",
@@ -134,7 +134,7 @@
       "desk": "tech-desk",
       "position": "top-1",
       "label": null,
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "tech-2",
@@ -158,7 +158,7 @@
       "desk": "tech-desk",
       "position": "bottom-1",
       "label": null,
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "tech-5",
@@ -166,7 +166,7 @@
       "desk": "tech-desk",
       "position": "bottom-2",
       "label": null,
-      "type": "hot"
+      "type": "rotativo"
     },
     {
       "id": "tech-6",

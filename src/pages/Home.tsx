@@ -61,15 +61,7 @@ export default function Home() {
             <span className="text-gray-600">{techOccupied} ocupados</span>
           </span>
         </div>
-      </header>
-
-      <main>
-        <DateNavigator date={date} onChange={setDate} />
-        {/* Sin onUpdate → popover solo lectura */}
-        <OfficeMap seats={resolvedSeats} people={data.people} />
-
-        {/* Leyenda */}
-        <div className="flex justify-center gap-6 mt-6 pb-8 text-xs text-gray-500">
+        <div className="flex items-center gap-5 text-xs text-gray-400 mt-2">
           <span className="flex items-center gap-1.5">
             <span className="w-4 h-4 rounded bg-green-100 border-2 border-green-300 inline-block" />
             Libre
@@ -83,6 +75,12 @@ export default function Home() {
             Ausente
           </span>
         </div>
+      </header>
+
+      <main>
+        <DateNavigator date={date} onChange={setDate} />
+        {/* Sin onUpdate → popover solo lectura */}
+        <OfficeMap seats={resolvedSeats} people={data.people} />
       </main>
     </div>
   )
