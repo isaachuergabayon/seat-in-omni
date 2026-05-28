@@ -134,7 +134,7 @@
       "desk": "tech-desk",
       "position": "top-1",
       "label": "RAMON",
-      "type": "fixed"
+      "type": "rotativo"
     },
     {
       "id": "tech-2",
@@ -158,7 +158,7 @@
       "desk": "tech-desk",
       "position": "bottom-1",
       "label": "ALAN",
-      "type": "fixed"
+      "type": "rotativo"
     },
     {
       "id": "tech-5",
@@ -166,7 +166,7 @@
       "desk": "tech-desk",
       "position": "bottom-2",
       "label": "ISAAC",
-      "type": "fixed"
+      "type": "rotativo"
     },
     {
       "id": "tech-6",
