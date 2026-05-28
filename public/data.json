@@ -133,8 +133,8 @@
       "building": "tech",
       "desk": "tech-desk",
       "position": "top-1",
-      "label": null,
-      "type": "rotativo"
+      "label": "RAMON",
+      "type": "fixed"
     },
     {
       "id": "tech-2",
@@ -157,16 +157,16 @@
       "building": "tech",
       "desk": "tech-desk",
       "position": "bottom-1",
-      "label": null,
-      "type": "rotativo"
+      "label": "ALAN",
+      "type": "fixed"
     },
     {
       "id": "tech-5",
       "building": "tech",
       "desk": "tech-desk",
       "position": "bottom-2",
-      "label": null,
-      "type": "rotativo"
+      "label": "ISAAC",
+      "type": "fixed"
     },
     {
       "id": "tech-6",
