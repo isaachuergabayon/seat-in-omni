@@ -1,0 +1,955 @@
+{
+  "people": [
+    {
+      "id": "cris",
+      "name": "CRIS"
+    },
+    {
+      "id": "rober",
+      "name": "ROBERTO"
+    },,
+    {
+      "id": "alan",
+      "name": "ALAN"
+    },
+    {
+      "id": "suso",
+      "name": "SUSO"
+    },
+    {
+      "id": "maria",
+      "name": "MARIA"
+    },
+    {
+      "id": "ruben",
+      "name": "RUBEN"
+    },
+    {
+      "id": "serena",
+      "name": "SERENA"
+    },
+    {
+      "id": "juanin",
+      "name": "JUANIN"
+    },
+    {
+      "id": "sergio",
+      "name": "SERGIO"
+    },
+    {
+      "id": "isaac",
+      "name": "ISAAC"
+    },
+    {
+      "id": "paula",
+      "name": "PAULA"
+    },
+    {
+      "id": "alberto",
+      "name": "ALBERTO"
+    },
+    {
+      "id": "ramon",
+      "name": "RAMON"
+    },
+    {
+      "id": "adriana",
+      "name": "ADRIANA"
+    },
+    {
+      "id": "pedro",
+      "name": "PEDRO"
+    },
+    {
+      "id": "angel",
+      "name": "ANGEL"
+    },
+    {
+      "id": "cati",
+      "name": "CATI"
+    }
+  ],
+  "seats": [
+    {
+      "id": "left-top-1",
+      "building": "com",
+      "desk": "left",
+      "position": "top-1",
+      "label": "CRIS",
+      "type": "hot"
+    },
+    {
+      "id": "left-top-2",
+      "building": "com",
+      "desk": "left",
+      "position": "top-2",
+      "label": null,
+      "type": "hot"
+    },
+    {
+      "id": "left-bottom-1",
+      "building": "com",
+      "desk": "left",
+      "position": "bottom-1",
+      "label": "ALAN",
+      "type": "hot"
+    },
+    {
+      "id": "left-bottom-2",
+      "building": "com",
+      "desk": "left",
+      "position": "bottom-2",
+      "label": "ROBERTO",
+      "type": "hot"
+    },
+    {
+      "id": "center-top-1",
+      "building": "com",
+      "desk": "center",
+      "position": "top-1",
+      "label": "SUSO",
+      "type": "fixed"
+    },
+    {
+      "id": "center-top-2",
+      "building": "com",
+      "desk": "center",
+      "position": "top-2",
+      "label": "MARIA",
+      "type": "fixed"
+    },
+    {
+      "id": "center-top-3",
+      "building": "com",
+      "desk": "center",
+      "position": "top-3",
+      "label": "RUBEN",
+      "type": "fixed"
+    },
+    {
+      "id": "center-top-4",
+      "building": "com",
+      "desk": "center",
+      "position": "top-4",
+      "label": "SERENA",
+      "type": "fixed"
+    },
+    {
+      "id": "center-bottom-1",
+      "building": "com",
+      "desk": "center",
+      "position": "bottom-1",
+      "label": "JUANIN",
+      "type": "fixed"
+    },
+    {
+      "id": "center-bottom-2",
+      "building": "com",
+      "desk": "center",
+      "position": "bottom-2",
+      "label": "SERGIO",
+      "type": "hot"
+    },
+    {
+      "id": "center-bottom-3",
+      "building": "com",
+      "desk": "center",
+      "position": "bottom-3",
+      "label": "ISAAC",
+      "type": "hot"
+    },
+    {
+      "id": "center-bottom-4",
+      "building": "com",
+      "desk": "center",
+      "position": "bottom-4",
+      "label": "PAULA",
+      "type": "fixed"
+    },
+    {
+      "id": "right-top-1",
+      "building": "com",
+      "desk": "right",
+      "position": "top-1",
+      "label": "ALBERTO",
+      "type": "hot"
+    },
+    {
+      "id": "right-top-2",
+      "building": "com",
+      "desk": "right",
+      "position": "top-2",
+      "label": null,
+      "type": "hot"
+    },
+    {
+      "id": "right-bottom-1",
+      "building": "com",
+      "desk": "right",
+      "position": "bottom-1",
+      "label": "RAMON",
+      "type": "hot"
+    },
+    {
+      "id": "right-bottom-2",
+      "building": "com",
+      "desk": "right",
+      "position": "bottom-2",
+      "label": "ADRIANA",
+      "type": "hot"
+    },
+    {
+      "id": "tech-1",
+      "building": "tech",
+      "desk": "tech-desk",
+      "position": "top-1",
+      "label": null,
+      "type": "hot"
+    },
+    {
+      "id": "tech-2",
+      "building": "tech",
+      "desk": "tech-desk",
+      "position": "top-2",
+      "label": "PEDRO",
+      "type": "fixed"
+    },
+    {
+      "id": "tech-3",
+      "building": "tech",
+      "desk": "tech-desk",
+      "position": "top-3",
+      "label": "ANGEL",
+      "type": "fixed"
+    },
+    {
+      "id": "tech-4",
+      "building": "tech",
+      "desk": "tech-desk",
+      "position": "bottom-1",
+      "label": null,
+      "type": "hot"
+    },
+    {
+      "id": "tech-5",
+      "building": "tech",
+      "desk": "tech-desk",
+      "position": "bottom-2",
+      "label": null,
+      "type": "hot"
+    },
+    {
+      "id": "tech-6",
+      "building": "tech",
+      "desk": "tech-desk",
+      "position": "bottom-3",
+      "label": "CATI",
+      "type": "fixed"
+    }
+  ],
+  "specialDays": [],
+  "assignments": [],
+  "templates": [
+    {
+      "id": "default",
+      "name": "Configuración base",
+      "assignments": [
+        {
+          "seatId": "left-top-1",
+          "personId": "cris",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "left-bottom-1",
+          "personId": "alan",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-bottom-2",
+          "personId": "roberto",
+          "status": "free"
+        },
+        {
+          "seatId": "center-top-1",
+          "personId": "suso",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-2",
+          "personId": "maria",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-3",
+          "personId": "ruben",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-4",
+          "personId": "serena",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-1",
+          "personId": "juanin",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-3",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-4",
+          "personId": "paula",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-1",
+          "personId": "alberto",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-2",
+          "personId": "pedro",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-3",
+          "personId": "angel",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-4",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-5",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-6",
+          "personId": "cati",
+          "status": "occupied"
+        }
+      ]
+    },
+    {
+      "id": "monday",
+      "name": "Lunes",
+      "weekday": 1,
+      "assignments": [
+        {
+          "seatId": "left-top-1",
+          "personId": "cris",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "left-bottom-1",
+          "personId": "alan",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-top-1",
+          "personId": "suso",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-2",
+          "personId": "maria",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-3",
+          "personId": "ruben",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-4",
+          "personId": "serena",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-1",
+          "personId": "juanin",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-3",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-4",
+          "personId": "paula",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-1",
+          "personId": "alberto",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-2",
+          "personId": "pedro",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-3",
+          "personId": "angel",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-4",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-5",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-6",
+          "personId": "cati",
+          "status": "occupied"
+        }
+      ]
+    },
+    {
+      "id": "tuesday",
+      "name": "Martes",
+      "weekday": 2,
+      "assignments": [
+        {
+          "seatId": "left-top-1",
+          "personId": "cris",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "left-bottom-1",
+          "personId": "alan",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-top-1",
+          "personId": "suso",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-2",
+          "personId": "maria",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-3",
+          "personId": "ruben",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-4",
+          "personId": "serena",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-1",
+          "personId": "juanin",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-3",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-4",
+          "personId": "paula",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-1",
+          "personId": "alberto",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-2",
+          "personId": "pedro",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-3",
+          "personId": "angel",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-4",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-5",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-6",
+          "personId": "cati",
+          "status": "occupied"
+        }
+      ]
+    },
+    {
+      "id": "wednesday",
+      "name": "Miércoles",
+      "weekday": 3,
+      "assignments": [
+        {
+          "seatId": "left-top-1",
+          "personId": "cris",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "left-bottom-1",
+          "personId": "alan",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-top-1",
+          "personId": "suso",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-2",
+          "personId": "maria",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-3",
+          "personId": "ruben",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-4",
+          "personId": "serena",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-1",
+          "personId": "juanin",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-3",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-4",
+          "personId": "paula",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-1",
+          "personId": "alberto",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-2",
+          "personId": "pedro",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-3",
+          "personId": "angel",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-4",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-5",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-6",
+          "personId": "cati",
+          "status": "occupied"
+        }
+      ]
+    },
+    {
+      "id": "thursday",
+      "name": "Jueves",
+      "weekday": 4,
+      "assignments": [
+        {
+          "seatId": "left-top-1",
+          "personId": "cris",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "left-bottom-1",
+          "personId": "alan",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-top-1",
+          "personId": "suso",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-2",
+          "personId": "maria",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-3",
+          "personId": "ruben",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-4",
+          "personId": "serena",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-1",
+          "personId": "juanin",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-3",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-4",
+          "personId": "paula",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-1",
+          "personId": "alberto",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-2",
+          "personId": "pedro",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-3",
+          "personId": "angel",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-4",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-5",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-6",
+          "personId": "cati",
+          "status": "occupied"
+        }
+      ]
+    },
+    {
+      "id": "friday",
+      "name": "Viernes",
+      "weekday": 5,
+      "assignments": [
+        {
+          "seatId": "left-top-1",
+          "personId": "cris",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "left-bottom-1",
+          "personId": "alan",
+          "status": "occupied"
+        },
+        {
+          "seatId": "left-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-top-1",
+          "personId": "suso",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-2",
+          "personId": "maria",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-3",
+          "personId": "ruben",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-top-4",
+          "personId": "serena",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-1",
+          "personId": "juanin",
+          "status": "occupied"
+        },
+        {
+          "seatId": "center-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-3",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "center-bottom-4",
+          "personId": "paula",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-1",
+          "personId": "alberto",
+          "status": "occupied"
+        },
+        {
+          "seatId": "right-top-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "right-bottom-2",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-1",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-2",
+          "personId": "pedro",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-3",
+          "personId": "angel",
+          "status": "occupied"
+        },
+        {
+          "seatId": "tech-4",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-5",
+          "personId": null,
+          "status": "free"
+        },
+        {
+          "seatId": "tech-6",
+          "personId": "cati",
+          "status": "occupied"
+        }
+      ]
+    }
+  ]
+}
