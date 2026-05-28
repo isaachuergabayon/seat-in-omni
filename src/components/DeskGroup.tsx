@@ -22,17 +22,25 @@ export default function DeskGroup({ deskId, seats, label, people, assignedPerson
 
   const cols = Math.max(topSeats.length, bottomSeats.length)
 
-  // Mesas left y right: layout horizontal (sitios | barra vertical | sitios)
+  // Mesas left y right: layout horizontal (columna izq | barra vertical | columna der)
+  // Columna izquierda: posiciones que terminan en -1 (top-1, bottom-1 → fila 1 y 2 izq)
+  // Columna derecha:   posiciones que terminan en -2 (top-2, bottom-2 → fila 1 y 2 der)
   const isVertical = deskId === 'left' || deskId === 'right'
 
   if (isVertical) {
+    const leftCol = seats
+      .filter((s) => s.position.endsWith('-1'))
+      .sort((a, b) => a.position.localeCompare(b.position))
+    const rightCol = seats
+      .filter((s) => s.position.endsWith('-2'))
+      .sort((a, b) => a.position.localeCompare(b.position))
     return (
       <div className="flex flex-col items-center gap-2 w-full md:w-auto">
         <span className="text-xs text-gray-400 font-medium uppercase tracking-wide">{label}</span>
         <div className="flex flex-row items-stretch gap-2 w-full">
-          {/* Columna top (izquierda de la barra) */}
+          {/* Columna izquierda */}
           <div className="flex flex-col gap-2 flex-1">
-            {topSeats.map((seat) => (
+            {leftCol.map((seat) => (
               <SeatCard
                 key={seat.id}
                 seat={seat}
@@ -44,9 +52,9 @@ export default function DeskGroup({ deskId, seats, label, people, assignedPerson
           </div>
           {/* Barra vertical central */}
           <div className="w-5 bg-gray-800 rounded-md self-stretch" />
-          {/* Columna bottom (derecha de la barra) */}
+          {/* Columna derecha */}
           <div className="flex flex-col gap-2 flex-1">
-            {bottomSeats.map((seat) => (
+            {rightCol.map((seat) => (
               <SeatCard
                 key={seat.id}
                 seat={seat}
