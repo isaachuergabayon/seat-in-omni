@@ -22,12 +22,11 @@ export default function DeskGroup({ deskId, seats, label, people, assignedPerson
 
   const cols = Math.max(topSeats.length, bottomSeats.length)
 
-  // Mesas left y right: layout horizontal (columna izq | barra vertical | columna der)
-  // Columna izquierda: posiciones que terminan en -1 (top-1, bottom-1 → fila 1 y 2 izq)
-  // Columna derecha:   posiciones que terminan en -2 (top-2, bottom-2 → fila 1 y 2 der)
   const isVertical = deskId === 'left' || deskId === 'right'
 
   if (isVertical) {
+    // Columna izquierda: top-1 arriba, bottom-1 abajo
+    // Columna derecha:   top-2 arriba, bottom-2 abajo
     const leftCol = seats
       .filter((s) => s.position.endsWith('-1'))
       .sort((a, b) => a.position.localeCompare(b.position))
