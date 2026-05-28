@@ -29,8 +29,8 @@
       "building": "com",
       "desk": "left",
       "position": "bottom-2",
-      "label": null,
-      "type": "hot"
+      "label": "ROBERTO",
+      "type": "fixed"
     },
     {
       "id": "center-top-1",
@@ -289,6 +289,10 @@
     {
       "id": "roberto-v3e67djk",
       "name": "ROBERTO"
+    },
+    {
+      "id": "roberto",
+      "name": "ROBERTO"
     }
   ],
   "templates": [
@@ -313,8 +317,8 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto",
+          "status": "occupied"
         },
         {
           "seatId": "center-top-1",
@@ -430,8 +434,8 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto",
+          "status": "occupied"
         },
         {
           "seatId": "center-top-1",
@@ -547,7 +551,7 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": "roberto-v3e67djk",
+          "personId": "roberto",
           "status": "occupied"
         },
         {
@@ -664,7 +668,7 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": "roberto-v3e67djk",
+          "personId": "roberto",
           "status": "occupied"
         },
         {
@@ -781,7 +785,7 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": "roberto-v3e67djk",
+          "personId": "roberto",
           "status": "occupied"
         },
         {
@@ -898,7 +902,7 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": "roberto-v3e67djk",
+          "personId": "roberto",
           "status": "occupied"
         },
         {
