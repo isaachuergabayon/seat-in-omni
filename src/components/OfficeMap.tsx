@@ -17,6 +17,15 @@ export default function OfficeMap({ seats, people, onUpdate }: Props) {
   const comSeats = seats.filter((s) => s.building === 'com')
   const techSeats = seats.filter((s) => s.building === 'tech')
 
+  // Set de personIds ya asignados (ocupados) — para controlar duplicados
+  // Se excluye el propio sitio en EditPopover, aquí pasamos todos
+  const assignedPersonIds = new Set(
+    seats
+      .filter((s) => s.status === 'occupied' && s.personName)
+      .map((s) => people?.find((p) => p.name === s.personName)?.id)
+      .filter((id): id is string => !!id)
+  )
+
   return (
     <div className="px-4 py-6 space-y-10">
       {/* ── EDIFICIO .COM ── */}
@@ -32,6 +41,7 @@ export default function OfficeMap({ seats, people, onUpdate }: Props) {
                 seats={comSeats.filter((s) => s.desk === id)}
                 label={label}
                 people={people}
+                assignedPersonIds={assignedPersonIds}
                 onUpdate={onUpdate}
               />
             </div>
@@ -52,6 +62,7 @@ export default function OfficeMap({ seats, people, onUpdate }: Props) {
                 seats={techSeats}
                 label="Mesa de 6"
                 people={people}
+                assignedPersonIds={assignedPersonIds}
                 onUpdate={onUpdate}
               />
             </div>

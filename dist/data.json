@@ -1,70 +1,4 @@
 {
-  "people": [
-    {
-      "id": "cris",
-      "name": "CRIS"
-    },
-    {
-      "id": "alan",
-      "name": "ALAN"
-    },
-    {
-      "id": "suso",
-      "name": "SUSO"
-    },
-    {
-      "id": "maria",
-      "name": "MARIA"
-    },
-    {
-      "id": "ruben",
-      "name": "RUBEN"
-    },
-    {
-      "id": "serena",
-      "name": "SERENA"
-    },
-    {
-      "id": "juanin",
-      "name": "JUANIN"
-    },
-    {
-      "id": "sergio",
-      "name": "SERGIO"
-    },
-    {
-      "id": "isaac",
-      "name": "ISAAC"
-    },
-    {
-      "id": "paula",
-      "name": "PAULA"
-    },
-    {
-      "id": "alberto",
-      "name": "ALBERTO"
-    },
-    {
-      "id": "ramon",
-      "name": "RAMON"
-    },
-    {
-      "id": "adriana",
-      "name": "ADRIANA"
-    },
-    {
-      "id": "pedro",
-      "name": "PEDRO"
-    },
-    {
-      "id": "angel",
-      "name": "ANGEL"
-    },
-    {
-      "id": "cati",
-      "name": "CATI"
-    }
-  ],
   "seats": [
     {
       "id": "left-top-1",
@@ -243,8 +177,120 @@
       "type": "fixed"
     }
   ],
-  "specialDays": [],
-  "assignments": [],
+  "people": [
+    {
+      "id": "cris",
+      "name": "CRIS"
+    },
+    {
+      "id": "alan",
+      "name": "ALAN"
+    },
+    {
+      "id": "suso",
+      "name": "SUSO"
+    },
+    {
+      "id": "maria",
+      "name": "MARIA"
+    },
+    {
+      "id": "ruben",
+      "name": "RUBEN"
+    },
+    {
+      "id": "serena",
+      "name": "SERENA"
+    },
+    {
+      "id": "juanin",
+      "name": "JUANIN"
+    },
+    {
+      "id": "sergio",
+      "name": "SERGIO"
+    },
+    {
+      "id": "isaac",
+      "name": "ISAAC"
+    },
+    {
+      "id": "paula",
+      "name": "PAULA"
+    },
+    {
+      "id": "alberto",
+      "name": "ALBERTO"
+    },
+    {
+      "id": "ramon",
+      "name": "RAMON"
+    },
+    {
+      "id": "adriana",
+      "name": "ADRIANA"
+    },
+    {
+      "id": "pedro",
+      "name": "PEDRO"
+    },
+    {
+      "id": "angel",
+      "name": "ANGEL"
+    },
+    {
+      "id": "cati",
+      "name": "CATI"
+    },
+    {
+      "id": "vane-a6ky6z97",
+      "name": "VANE"
+    },
+    {
+      "id": "victor-platas-dp05j9o4",
+      "name": "VICTOR PLATAS"
+    },
+    {
+      "id": "victor-moran-cjv21ts8",
+      "name": "VICTOR MORAN"
+    },
+    {
+      "id": "laura-gomez-67ehih4b",
+      "name": "LAURA GOMEZ"
+    },
+    {
+      "id": "laura-rios-65tx6akh",
+      "name": "LAURA RIOS"
+    },
+    {
+      "id": "ana-dr7wsskz",
+      "name": "ANA"
+    },
+    {
+      "id": "jose-domingo-it127yb1",
+      "name": "JOSE DOMINGO"
+    },
+    {
+      "id": "marcos-afmin4xs",
+      "name": "MARCOS"
+    },
+    {
+      "id": "maria-g.-bhh4vs2t",
+      "name": "MARIA G."
+    },
+    {
+      "id": "marta-4k8ktu3n",
+      "name": "MARTA"
+    },
+    {
+      "id": "alvaro-9mfknda2",
+      "name": "ALVARO"
+    },
+    {
+      "id": "roberto-v3e67djk",
+      "name": "ROBERTO"
+    }
+  ],
   "templates": [
     {
       "id": "default",
@@ -374,8 +420,8 @@
         },
         {
           "seatId": "left-top-2",
-          "personId": null,
-          "status": "free"
+          "personId": "vane-a6ky6z97",
+          "status": "occupied"
         },
         {
           "seatId": "left-bottom-1",
@@ -414,13 +460,13 @@
         },
         {
           "seatId": "center-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "sergio",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-3",
-          "personId": null,
-          "status": "free"
+          "personId": "victor-platas-dp05j9o4",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-4",
@@ -439,18 +485,18 @@
         },
         {
           "seatId": "right-bottom-1",
-          "personId": null,
-          "status": "free"
+          "personId": "ramon",
+          "status": "occupied"
         },
         {
           "seatId": "right-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "adriana",
+          "status": "occupied"
         },
         {
           "seatId": "tech-1",
-          "personId": null,
-          "status": "free"
+          "personId": "marta-4k8ktu3n",
+          "status": "occupied"
         },
         {
           "seatId": "tech-2",
@@ -464,13 +510,13 @@
         },
         {
           "seatId": "tech-4",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto-v3e67djk",
+          "status": "occupied"
         },
         {
           "seatId": "tech-5",
-          "personId": null,
-          "status": "free"
+          "personId": "isaac",
+          "status": "occupied"
         },
         {
           "seatId": "tech-6",
@@ -491,18 +537,18 @@
         },
         {
           "seatId": "left-top-2",
-          "personId": null,
-          "status": "free"
+          "personId": "alvaro-9mfknda2",
+          "status": "occupied"
         },
         {
           "seatId": "left-bottom-1",
-          "personId": "alan",
+          "personId": "vane-a6ky6z97",
           "status": "occupied"
         },
         {
           "seatId": "left-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto-v3e67djk",
+          "status": "occupied"
         },
         {
           "seatId": "center-top-1",
@@ -531,8 +577,8 @@
         },
         {
           "seatId": "center-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "sergio",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-3",
@@ -561,13 +607,13 @@
         },
         {
           "seatId": "right-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "adriana",
+          "status": "occupied"
         },
         {
           "seatId": "tech-1",
-          "personId": null,
-          "status": "free"
+          "personId": "ramon",
+          "status": "occupied"
         },
         {
           "seatId": "tech-2",
@@ -581,13 +627,13 @@
         },
         {
           "seatId": "tech-4",
-          "personId": null,
-          "status": "free"
+          "personId": "alan",
+          "status": "occupied"
         },
         {
           "seatId": "tech-5",
-          "personId": null,
-          "status": "free"
+          "personId": "isaac",
+          "status": "occupied"
         },
         {
           "seatId": "tech-6",
@@ -603,7 +649,7 @@
       "assignments": [
         {
           "seatId": "left-top-1",
-          "personId": "cris",
+          "personId": "victor-platas-dp05j9o4",
           "status": "occupied"
         },
         {
@@ -613,13 +659,13 @@
         },
         {
           "seatId": "left-bottom-1",
-          "personId": "alan",
+          "personId": "marta-4k8ktu3n",
           "status": "occupied"
         },
         {
           "seatId": "left-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto-v3e67djk",
+          "status": "occupied"
         },
         {
           "seatId": "center-top-1",
@@ -648,13 +694,13 @@
         },
         {
           "seatId": "center-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "maria-g.-bhh4vs2t",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-3",
-          "personId": null,
-          "status": "free"
+          "personId": "isaac",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-4",
@@ -673,18 +719,18 @@
         },
         {
           "seatId": "right-bottom-1",
-          "personId": null,
-          "status": "free"
+          "personId": "ramon",
+          "status": "occupied"
         },
         {
           "seatId": "right-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "adriana",
+          "status": "occupied"
         },
         {
           "seatId": "tech-1",
-          "personId": null,
-          "status": "free"
+          "personId": "alberto",
+          "status": "occupied"
         },
         {
           "seatId": "tech-2",
@@ -698,13 +744,13 @@
         },
         {
           "seatId": "tech-4",
-          "personId": null,
-          "status": "free"
+          "personId": "alan",
+          "status": "occupied"
         },
         {
           "seatId": "tech-5",
-          "personId": null,
-          "status": "free"
+          "personId": "sergio",
+          "status": "occupied"
         },
         {
           "seatId": "tech-6",
@@ -720,13 +766,13 @@
       "assignments": [
         {
           "seatId": "left-top-1",
-          "personId": "cris",
+          "personId": "isaac",
           "status": "occupied"
         },
         {
           "seatId": "left-top-2",
-          "personId": null,
-          "status": "free"
+          "personId": "alvaro-9mfknda2",
+          "status": "occupied"
         },
         {
           "seatId": "left-bottom-1",
@@ -735,8 +781,8 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto-v3e67djk",
+          "status": "occupied"
         },
         {
           "seatId": "center-top-1",
@@ -765,13 +811,13 @@
         },
         {
           "seatId": "center-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "victor-moran-cjv21ts8",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-3",
-          "personId": null,
-          "status": "free"
+          "personId": "ana-dr7wsskz",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-4",
@@ -785,23 +831,23 @@
         },
         {
           "seatId": "right-top-2",
-          "personId": null,
-          "status": "free"
+          "personId": "adriana",
+          "status": "occupied"
         },
         {
           "seatId": "right-bottom-1",
-          "personId": null,
-          "status": "free"
+          "personId": "ramon",
+          "status": "occupied"
         },
         {
           "seatId": "right-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "laura-rios-65tx6akh",
+          "status": "occupied"
         },
         {
           "seatId": "tech-1",
-          "personId": null,
-          "status": "free"
+          "personId": "alberto",
+          "status": "occupied"
         },
         {
           "seatId": "tech-2",
@@ -815,13 +861,13 @@
         },
         {
           "seatId": "tech-4",
-          "personId": null,
-          "status": "free"
+          "personId": "sergio",
+          "status": "occupied"
         },
         {
           "seatId": "tech-5",
-          "personId": null,
-          "status": "free"
+          "personId": "marcos-afmin4xs",
+          "status": "occupied"
         },
         {
           "seatId": "tech-6",
@@ -852,8 +898,8 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "roberto-v3e67djk",
+          "status": "occupied"
         },
         {
           "seatId": "center-top-1",
@@ -882,8 +928,8 @@
         },
         {
           "seatId": "center-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "jose-domingo-it127yb1",
+          "status": "occupied"
         },
         {
           "seatId": "center-bottom-3",
@@ -902,18 +948,18 @@
         },
         {
           "seatId": "right-top-2",
-          "personId": null,
-          "status": "free"
+          "personId": "sergio",
+          "status": "occupied"
         },
         {
           "seatId": "right-bottom-1",
-          "personId": null,
-          "status": "free"
+          "personId": "ramon",
+          "status": "occupied"
         },
         {
           "seatId": "right-bottom-2",
-          "personId": null,
-          "status": "free"
+          "personId": "adriana",
+          "status": "occupied"
         },
         {
           "seatId": "tech-1",
@@ -947,5 +993,7 @@
         }
       ]
     }
-  ]
+  ],
+  "assignments": [],
+  "specialDays": []
 }

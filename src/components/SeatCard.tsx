@@ -3,9 +3,9 @@ import { Person, ResolvedSeat, SeatStatus } from '../types'
 
 interface Props {
   seat: ResolvedSeat
-  // Si se pasa onUpdate, la tarjeta es editable
   onUpdate?: (seatId: string, status: SeatStatus, personId: string | null) => void
   people?: Person[]
+  assignedPersonIds?: Set<string>
 }
 
 const statusStyles: Record<string, string> = {
@@ -20,7 +20,7 @@ const statusLabel: Record<string, string> = {
   absent: 'Ausente',
 }
 
-export default function SeatCard({ seat, onUpdate, people = [] }: Props) {
+export default function SeatCard({ seat, onUpdate, people = [], assignedPersonIds = new Set() }: Props) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
@@ -28,7 +28,6 @@ export default function SeatCard({ seat, onUpdate, people = [] }: Props) {
   const label = seat.personName ?? seat.label ?? 'Libre'
   const isEditable = !!onUpdate
 
-  // Cerrar al hacer click fuera
   useEffect(() => {
     if (!open) return
     const handler = (e: MouseEvent) => {
@@ -49,7 +48,6 @@ export default function SeatCard({ seat, onUpdate, people = [] }: Props) {
           ${isEditable ? 'cursor-pointer hover:brightness-95 active:scale-95' : 'cursor-default'}
         `}
       >
-        {/* Punto caliente en esquina superior derecha */}
         {seat.type === 'hot' && (
           <span className="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-emerald-400" />
         )}
@@ -66,6 +64,7 @@ export default function SeatCard({ seat, onUpdate, people = [] }: Props) {
               key={seat.id + seat.status + (seat.personName ?? '')}
               seat={seat}
               people={people}
+              assignedPersonIds={assignedPersonIds}
               onUpdate={(status, personId) => {
                 onUpdate!(seat.id, status, personId)
                 setOpen(false)
@@ -81,7 +80,7 @@ export default function SeatCard({ seat, onUpdate, people = [] }: Props) {
   )
 }
 
-// ── Solo lectura (vista pública) ─────────────────────────────────────────────
+// ── Solo lectura ──────────────────────────────────────────────────────────────
 function ReadPopover({ seat }: { seat: ResolvedSeat }) {
   return (
     <div className="text-center text-xs text-gray-500 space-y-1">
@@ -99,14 +98,17 @@ function ReadPopover({ seat }: { seat: ResolvedSeat }) {
   )
 }
 
+// ── Editable ──────────────────────────────────────────────────────────────────
 function EditPopover({
   seat,
   people,
+  assignedPersonIds,
   onUpdate,
   onClose,
 }: {
   seat: ResolvedSeat
   people: Person[]
+  assignedPersonIds: Set<string>
   onUpdate: (status: SeatStatus, personId: string | null) => void
   onClose: () => void
 }) {
@@ -116,10 +118,27 @@ function EditPopover({
   const [status, setStatus] = useState<SeatStatus>(seat.status)
   const [personId, setPersonId] = useState<string | null>(currentPersonId)
 
+  // Bug 2: al cambiar a libre o ausente, limpiar la persona seleccionada
+  const handleStatusChange = (newStatus: SeatStatus) => {
+    setStatus(newStatus)
+    if (newStatus !== 'occupied') {
+      setPersonId(null)
+    }
+  }
+
   const handleSave = () => {
-    const finalPersonId = status === 'occupied' ? (personId || null) : null
+    // Bug 3: si status es occupied pero no hay persona → guardar como occupied sin persona
+    // Bug 2: si no es occupied → personId siempre null
+    const finalPersonId = status === 'occupied' ? personId : null
     onUpdate(status, finalPersonId)
   }
+
+  // Bug 4: filtrar personas ya asignadas en otros sitios
+  // Se permite mantener la persona del sitio actual (currentPersonId)
+  const availablePeople = people
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .filter((p) => !assignedPersonIds.has(p.id) || p.id === currentPersonId)
 
   return (
     <div className="space-y-2">
@@ -129,7 +148,7 @@ function EditPopover({
           {(['occupied', 'free', 'absent'] as SeatStatus[]).map((s) => (
             <button
               key={s}
-              onClick={() => setStatus(s)}
+              onClick={() => handleStatusChange(s)}
               className={`flex-1 text-[10px] py-1 rounded border transition font-medium
                 ${status === s
                   ? s === 'occupied' ? 'bg-red-200 border-red-400 text-red-800'
@@ -153,7 +172,7 @@ function EditPopover({
             className="w-full border border-gray-200 rounded px-2 py-1 text-xs"
           >
             <option value="">-- Sin asignar --</option>
-            {people.slice().sort((a, b) => a.name.localeCompare(b.name)).map((p) => (
+            {availablePeople.map((p) => (
               <option key={p.id} value={p.id}>
                 {p.name}
               </option>
