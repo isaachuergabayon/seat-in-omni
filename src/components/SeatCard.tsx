@@ -112,8 +112,8 @@ function EditPopover({
   onUpdate: (status: SeatStatus, personId: string | null) => void
   onClose: () => void
 }) {
-  const currentPersonId =
-    seat.personName ? (people.find((p) => p.name === seat.personName)?.id ?? null) : null
+  // personId viene directamente del ResolvedSeat — no hay que buscarlo por nombre
+  const currentPersonId = seat.personId ?? null
 
   const [status, setStatus] = useState<SeatStatus>(seat.status)
   const [personId, setPersonId] = useState<string | null>(currentPersonId)

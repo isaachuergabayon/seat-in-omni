@@ -55,4 +55,5 @@ export interface AppData {
 export interface ResolvedSeat extends Seat {
   status: SeatStatus
   personName: string | null
+  personId: string | null
 }

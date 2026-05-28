@@ -17,13 +17,11 @@ export default function OfficeMap({ seats, people, onUpdate }: Props) {
   const comSeats = seats.filter((s) => s.building === 'com')
   const techSeats = seats.filter((s) => s.building === 'tech')
 
-  // Set de personIds ya asignados (ocupados) — para controlar duplicados
-  // Se excluye el propio sitio en EditPopover, aquí pasamos todos
+  // Set de personIds ya asignados (ocupados) — directo desde ResolvedSeat.personId
   const assignedPersonIds = new Set(
     seats
-      .filter((s) => s.status === 'occupied' && s.personName)
-      .map((s) => people?.find((p) => p.name === s.personName)?.id)
-      .filter((id): id is string => !!id)
+      .filter((s) => s.status === 'occupied' && s.personId)
+      .map((s) => s.personId as string)
   )
 
   return (

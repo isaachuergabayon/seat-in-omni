@@ -46,7 +46,7 @@ export function resolveSeatsForDate(data: AppData, date: string): ResolvedSeat[]
 
     const personName = personId ? getPersonName(data, personId) : null
 
-    return { ...seat, status, personName }
+    return { ...seat, status, personName, personId }
   })
 }
 
@@ -73,7 +73,7 @@ export function resolveSeatsForTemplate(data: AppData, templateId: string): Reso
     }
 
     const personName = personId ? getPersonName(data, personId) : null
-    return { ...seat, status, personName }
+    return { ...seat, status, personName, personId }
   })
 }
 
