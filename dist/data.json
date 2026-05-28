@@ -5,10 +5,6 @@
       "name": "CRIS"
     },
     {
-      "id": "rober",
-      "name": "ROBERTO"
-    },,
-    {
       "id": "alan",
       "name": "ALAN"
     },
@@ -99,7 +95,7 @@
       "building": "com",
       "desk": "left",
       "position": "bottom-2",
-      "label": "ROBERTO",
+      "label": null,
       "type": "hot"
     },
     {
@@ -271,7 +267,7 @@
         },
         {
           "seatId": "left-bottom-2",
-          "personId": "roberto",
+          "personId": null,
           "status": "free"
         },
         {
