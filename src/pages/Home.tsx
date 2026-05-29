@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
+import OfficeIcon from '../components/OfficeIcon'
 import { formatDate, resolveSeatsForDate } from '../utils'
 import { Assignment, SeatStatus } from '../types'
 
@@ -38,9 +39,12 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-4 py-3">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold text-gray-800">Mapa de Sitios</h1>
-            <p className="text-xs text-gray-400">Omni Office</p>
+          <div className="flex items-center gap-2">
+            <OfficeIcon size={28} />
+            <div>
+              <h1 className="text-lg font-bold text-gray-800">Mapa de Sitios</h1>
+              <p className="text-xs text-gray-400">Omni Office</p>
+            </div>
           </div>
           <Link
             to="/admin"

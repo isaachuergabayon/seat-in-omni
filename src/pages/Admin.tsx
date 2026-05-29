@@ -4,6 +4,7 @@ import { useData } from '../context/DataContext'
 import { formatDate, generateId, resolveSeatsForDate, resolveSeatsForTemplate } from '../utils'
 import { AppData, Assignment, SeatStatus, TemplateAssignment } from '../types'
 import OfficeMap from '../components/OfficeMap'
+import OfficeIcon from '../components/OfficeIcon'
 
 type Tab = 'week' | 'exceptions' | 'people' | 'specialDays' | 'templates'
 
@@ -131,9 +132,12 @@ export default function Admin() {
     <div className="min-h-screen bg-gray-50">
       <header className="bg-gray-800 text-white px-4 py-3">
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-lg font-bold">Panel de Administración</h1>
-            <p className="text-xs text-gray-400">Mapa de Sitios - Omni</p>
+          <div className="flex items-center gap-2">
+            <OfficeIcon size={28} />
+            <div>
+              <h1 className="text-lg font-bold">Panel de Administración</h1>
+              <p className="text-xs text-gray-400">Mapa de Sitios - Omni</p>
+            </div>
           </div>
           <div className="flex items-center gap-2">
             {saved && <span className="text-green-400 text-xs">✓ Guardado</span>}
