@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
+import { ref, onValue, set } from 'firebase/database'
+import { db } from '../firebase'
 import { AppData } from '../types'
 
-interface PersistedData {
+interface FirebaseData {
   assignments: AppData['assignments']
   specialDays: AppData['specialDays']
-  // Todas las plantillas: protegidas modificadas + custom
   allTemplates: AppData['templates']
-  // Solo las personas añadidas por el admin (no las del seed)
   extraPeople: AppData['people']
 }
 
@@ -22,81 +22,69 @@ const DataContext = createContext<DataContextType>({
   loading: true,
 })
 
-function loadPersisted(): PersistedData | null {
-  try {
-    const saved = localStorage.getItem('seatInOmni_persisted')
-    return saved ? JSON.parse(saved) : null
-  } catch {
-    return null
-  }
-}
-
-function savePersisted(data: AppData, basePeopleIds: Set<string>) {
-  try {
-    const persisted: PersistedData = {
-      assignments: data.assignments,
-      specialDays: data.specialDays,
-      // Guardamos TODAS las plantillas (incluyendo las protegidas modificadas)
-      allTemplates: data.templates,
-      // Solo guardamos las personas que NO son del seed original
-      extraPeople: data.people.filter((p) => !basePeopleIds.has(p.id)),
-    }
-    localStorage.setItem('seatInOmni_persisted', JSON.stringify(persisted))
-  } catch {
-    // ignore
-  }
-}
-
 export function DataProvider({ children }: { children: React.ReactNode }) {
-  const [data, setDataState] = useState<AppData | null>(null)
-  const [basePeopleIds, setBasePeopleIds] = useState<Set<string>>(new Set())
+  const [baseData, setBaseData] = useState<AppData | null>(null)
+  const [firebaseData, setFirebaseData] = useState<FirebaseData | null>(null)
   const [loading, setLoading] = useState(true)
 
+  // 1. Cargar seed desde data.json
   useEffect(() => {
-    // Leer localStorage síncronamente ANTES del fetch
-    const persisted = loadPersisted()
-
     fetch('./data.json?v=' + Date.now())
       .then((r) => r.json())
-      .then((base: AppData) => {
-        const baseIds = new Set(base.people.map((p) => p.id))
-        setBasePeopleIds(baseIds)
-
-        // People: seed siempre + extras del localStorage
-        const extraPeople = persisted?.extraPeople?.filter((p) => !baseIds.has(p.id)) ?? []
-        const mergedPeople = [...base.people, ...extraPeople]
-
-        // Templates: si hay guardadas en localStorage, usarlas (tienen precedencia)
-        // pero asegurar que los IDs protegidos existan (fallback al data.json si falta alguno)
-        let mergedTemplates: AppData['templates']
-        if (persisted?.allTemplates && persisted.allTemplates.length > 0) {
-          const persistedIds = new Set(persisted.allTemplates.map((t) => t.id))
-          // Añadir plantillas del seed que no estén en el localStorage (nuevas incorporadas)
-          const missingFromBase = base.templates.filter((t) => !persistedIds.has(t.id))
-          mergedTemplates = [...persisted.allTemplates, ...missingFromBase]
-        } else {
-          mergedTemplates = base.templates
-        }
-
-        const merged: AppData = {
-          seats: base.seats,
-          people: mergedPeople,
-          templates: mergedTemplates,
-          assignments: persisted?.assignments ?? base.assignments,
-          specialDays: persisted?.specialDays ?? base.specialDays,
-        }
-        setDataState(merged)
-        setLoading(false)
-      })
+      .then((base: AppData) => setBaseData(base))
   }, [])
 
+  // 2. Suscribirse a Firebase en tiempo real
+  useEffect(() => {
+    const fbRef = ref(db, 'seatInOmni')
+    const unsub = onValue(fbRef, (snapshot) => {
+      const val = snapshot.val()
+      setFirebaseData(val ?? {})
+      setLoading(false)
+    })
+    return () => unsub()
+  }, [])
+
+  // 3. Merge: seed + Firebase
+  const data: AppData | null = baseData
+    ? (() => {
+        const baseIds = new Set(baseData.people.map((p) => p.id))
+        const extraPeople = (firebaseData?.extraPeople ?? []).filter((p) => !baseIds.has(p.id))
+
+        let mergedTemplates: AppData['templates']
+        const fbTemplates = firebaseData?.allTemplates
+        if (fbTemplates && fbTemplates.length > 0) {
+          const fbIds = new Set(fbTemplates.map((t) => t.id))
+          const missing = baseData.templates.filter((t) => !fbIds.has(t.id))
+          mergedTemplates = [...fbTemplates, ...missing]
+        } else {
+          mergedTemplates = baseData.templates
+        }
+
+        return {
+          seats: baseData.seats,
+          people: [...baseData.people, ...extraPeople],
+          templates: mergedTemplates,
+          assignments: firebaseData?.assignments ?? baseData.assignments,
+          specialDays: firebaseData?.specialDays ?? baseData.specialDays,
+        }
+      })()
+    : null
+
   const setData = (newData: AppData) => {
-    setDataState(newData)
-    savePersisted(newData, basePeopleIds)
+    if (!baseData) return
+    const baseIds = new Set(baseData.people.map((p) => p.id))
+    const payload: FirebaseData = {
+      assignments: newData.assignments ?? [],
+      specialDays: newData.specialDays ?? [],
+      allTemplates: newData.templates ?? [],
+      extraPeople: newData.people.filter((p) => !baseIds.has(p.id)),
+    }
+    set(ref(db, 'seatInOmni'), payload)
   }
 
   return (
-    <DataContext.Provider value={{ data, setData, loading }}>
+    <DataContext.Provider value={{ data, loading: loading || !baseData, setData }}>
       {children}
     </DataContext.Provider>
   )

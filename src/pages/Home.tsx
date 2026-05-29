@@ -4,9 +4,10 @@ import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
 import { formatDate, resolveSeatsForDate } from '../utils'
+import { Assignment, SeatStatus } from '../types'
 
 export default function Home() {
-  const { data, loading } = useData()
+  const { data, loading, setData } = useData()
   const [date, setDate] = useState(formatDate(new Date()))
 
   if (loading || !data) {
@@ -21,6 +22,18 @@ export default function Home() {
   const techFree = techSeats.filter((s) => s.status === 'free').length
   const techOccupied = techSeats.filter((s) => s.status === 'occupied').length
 
+  const handleUpdate = (seatId: string, status: SeatStatus, personId: string | null) => {
+    const existing = data.assignments.findIndex((a) => a.seatId === seatId && a.date === date)
+    const newAssignment: Assignment = { seatId, date, personId, status }
+    const assignments = [...data.assignments]
+    if (existing >= 0) {
+      assignments[existing] = newAssignment
+    } else {
+      assignments.push(newAssignment)
+    }
+    setData({ ...data, assignments })
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-4 py-3">
@@ -30,11 +43,11 @@ export default function Home() {
             <p className="text-xs text-gray-400">Omni Office</p>
           </div>
           <Link
-              to="/admin"
-              className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
-            >
-              Admin
-            </Link>
+            to="/admin"
+            className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
+          >
+            Admin
+          </Link>
         </div>
         <div className="flex items-center gap-4 text-sm mt-2 flex-wrap">
           <span className="text-xs text-gray-500 font-medium">.COM:</span>
@@ -61,8 +74,7 @@ export default function Home() {
 
       <main>
         <DateNavigator date={date} onChange={setDate} />
-        {/* Sin onUpdate → popover solo lectura */}
-        <OfficeMap seats={resolvedSeats} people={data.people} />
+        <OfficeMap seats={resolvedSeats} people={data.people} onUpdate={handleUpdate} />
 
         {/* Leyenda */}
         <div className="flex justify-center gap-6 mt-6 pb-8 text-xs text-gray-500">
