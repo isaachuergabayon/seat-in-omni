@@ -1,4 +1,4 @@
-import { formatDisplayDate, parseDate, formatDate } from '../utils'
+import { formatDisplayDate, parseDate, formatDate, skipWeekend, skipWeekendBack } from '../utils'
 import { useData } from '../context/DataContext'
 import { getSpecialDayName } from '../utils'
 
@@ -9,20 +9,25 @@ interface Props {
 
 export default function DateNavigator({ date, onChange }: Props) {
   const { data } = useData()
-  const today = formatDate(new Date())
+  const today = skipWeekend(formatDate(new Date()))
   const isToday = date === today
 
   const prev = () => {
     if (isToday) return
     const d = parseDate(date)
     d.setDate(d.getDate() - 1)
-    onChange(formatDate(d))
+    onChange(skipWeekendBack(formatDate(d)))
   }
 
   const next = () => {
     const d = parseDate(date)
     d.setDate(d.getDate() + 1)
-    onChange(formatDate(d))
+    onChange(skipWeekend(formatDate(d)))
+  }
+
+  const handleInputChange = (val: string) => {
+    if (!val) return
+    onChange(skipWeekend(val))
   }
 
   const specialName = data ? getSpecialDayName(data, date) : null
@@ -46,7 +51,7 @@ export default function DateNavigator({ date, onChange }: Props) {
             type="date"
             value={date}
             min={today}
-            onChange={(e) => onChange(e.target.value)}
+            onChange={(e) => handleInputChange(e.target.value)}
             className="border border-gray-300 rounded-lg px-3 py-1 text-sm text-gray-600 cursor-pointer"
           />
           <p className="text-gray-500 text-sm mt-1 capitalize">{formatDisplayDate(date)}</p>

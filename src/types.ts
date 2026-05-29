@@ -57,3 +57,10 @@ export interface ResolvedSeat extends Seat {
   personName: string | null
   personId: string | null
 }
+
+export interface ChangeLogEntry {
+  id: string
+  ts: number           // Date.now() ms
+  action: string       // descripción legible
+  category: 'map' | 'admin'
+}

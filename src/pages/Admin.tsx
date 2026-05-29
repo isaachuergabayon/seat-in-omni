@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useData } from '../context/DataContext'
-import { formatDate, generateId, resolveSeatsForDate, resolveSeatsForTemplate } from '../utils'
+import { formatDate, generateId, resolveSeatsForDate, resolveSeatsForTemplate, skipWeekend, formatTimestamp } from '../utils'
 import { AppData, Assignment, SeatStatus, TemplateAssignment } from '../types'
 import OfficeMap from '../components/OfficeMap'
 import OfficeIcon from '../components/OfficeIcon'
+import { useChangeLog } from '../hooks/useChangeLog'
 
-type Tab = 'week' | 'exceptions' | 'people' | 'specialDays' | 'templates'
+type Tab = 'week' | 'exceptions' | 'people' | 'specialDays' | 'templates' | 'log'
 
 const WEEKDAY_IDS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
 const WEEKDAY_LABELS: Record<string, string> = {
@@ -22,8 +23,9 @@ export default function Admin() {
   const { data, setData, loading } = useData()
   const [tab, setTab] = useState<Tab>('week')
   const [activeWeekday, setActiveWeekday] = useState<string>('monday')
-  const [date, setDate] = useState(formatDate(new Date()))
+  const [date, setDate] = useState(() => skipWeekend(formatDate(new Date())))
   const [saved, setSaved] = useState(false)
+  const { entries, logChange, clearLog } = useChangeLog()
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -35,15 +37,24 @@ export default function Admin() {
     setTimeout(() => setSaved(false), 2000)
   }
 
+  const handleDateChange = (val: string) => {
+    if (!val) return
+    setDate(skipWeekend(val))
+  }
+
   // ─── PEOPLE ───────────────────────────────────────────────────────────────
   const addPerson = (name: string) => {
     if (!name.trim()) return
     const id = name.toLowerCase().replace(/\s+/g, '-') + '-' + generateId()
-    save({ ...data, people: [...data.people, { id, name: name.trim().toUpperCase() }] })
+    const trimmed = name.trim().toUpperCase()
+    save({ ...data, people: [...data.people, { id, name: trimmed }] })
+    logChange(`Persona añadida: ${trimmed}`, 'admin')
   }
 
   const removePerson = (id: string) => {
+    const person = data.people.find((p) => p.id === id)
     save({ ...data, people: data.people.filter((p) => p.id !== id) })
+    if (person) logChange(`Persona eliminada: ${person.name}`, 'admin')
   }
 
   // ─── SPECIAL DAYS ─────────────────────────────────────────────────────────
@@ -51,10 +62,13 @@ export default function Admin() {
     if (!name.trim() || !specialDate) return
     const id = generateId()
     save({ ...data, specialDays: [...data.specialDays, { id, name: name.trim(), date: specialDate }] })
+    logChange(`Día especial añadido: ${name.trim()} · ${specialDate}`, 'admin')
   }
 
   const removeSpecialDay = (id: string) => {
+    const day = data.specialDays.find((d) => d.id === id)
     save({ ...data, specialDays: data.specialDays.filter((d) => d.id !== id) })
+    if (day) logChange(`Día especial eliminado: ${day.name} · ${day.date}`, 'admin')
   }
 
   // ─── WEEKDAY TEMPLATE EDIT ────────────────────────────────────────────────
@@ -72,6 +86,8 @@ export default function Admin() {
       return { ...t, assignments }
     })
     save({ ...data, templates })
+    const label = WEEKDAY_LABELS[templateId] ?? templateId
+    logChange(`Plantilla ${label} · ${seatId} → ${status}`, 'admin')
   }
 
   // ─── APPLY TEMPLATE TO DATE ───────────────────────────────────────────────
@@ -86,6 +102,7 @@ export default function Admin() {
       status: ta.status,
     }))
     save({ ...data, assignments: [...filtered, ...newAssignments] })
+    logChange(`Plantilla "${template.name}" aplicada a ${targetDate}`, 'admin')
   }
 
   // ─── EXCEPTIONS ───────────────────────────────────────────────────────────
@@ -99,10 +116,13 @@ export default function Admin() {
       assignments.push(newAssignment)
     }
     save({ ...data, assignments })
+    const personName = personId ? (data.people.find((p) => p.id === personId)?.name ?? personId) : '—'
+    logChange(`Excepción: ${seatId} → ${status} (${personName}) · ${date}`, 'admin')
   }
 
   const clearExceptions = () => {
     save({ ...data, assignments: data.assignments.filter((a) => a.date !== date) })
+    logChange(`Excepciones limpiadas: ${date}`, 'admin')
   }
 
   // ─── CUSTOM TEMPLATES ─────────────────────────────────────────────────────
@@ -116,11 +136,14 @@ export default function Admin() {
     }))
     const id = generateId()
     save({ ...data, templates: [...data.templates, { id, name: name.trim(), assignments }] })
+    logChange(`Plantilla creada: "${name.trim()}"`, 'admin')
   }
 
   const removeTemplate = (id: string) => {
     if (PROTECTED_IDS.has(id)) return
+    const t = data.templates.find((t) => t.id === id)
     save({ ...data, templates: data.templates.filter((t) => t.id !== id) })
+    if (t) logChange(`Plantilla eliminada: "${t.name}"`, 'admin')
   }
 
   const resolvedExceptionSeats = resolveSeatsForDate(data, date)
@@ -160,6 +183,7 @@ export default function Admin() {
             ['people', 'Personas'],
             ['specialDays', 'Días Especiales'],
             ['templates', 'Plantillas'],
+            ['log', 'Historial'],
           ] as [Tab, string][]).map(([key, label]) => (
             <button
               key={key}
@@ -234,7 +258,7 @@ export default function Admin() {
                   <input
                     type="date"
                     value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    onChange={(e) => handleDateChange(e.target.value)}
                     className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
                   />
                 </div>
@@ -360,6 +384,57 @@ export default function Admin() {
                   </li>
                 ))}
               </ul>
+            )}
+          </div>
+        )}
+
+        {/* ── HISTORIAL ── */}
+        {tab === 'log' && (
+          <div className="max-w-5xl mx-auto">
+            <div className="flex items-center justify-between mb-4">
+              <p className="text-sm text-gray-500">Últimos 7 días de actividad.</p>
+              {entries.length > 0 && (
+                <button
+                  onClick={clearLog}
+                  className="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs rounded-lg border border-red-200 transition"
+                >
+                  Limpiar historial
+                </button>
+              )}
+            </div>
+            {entries.length === 0 ? (
+              <div className="px-4 py-8 text-center text-gray-400 text-sm bg-white rounded-xl border border-gray-200">
+                No hay actividad registrada todavía.
+              </div>
+            ) : (
+              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead>
+                    <tr className="border-b border-gray-100 bg-gray-50">
+                      <th className="text-left px-4 py-2.5 text-xs font-medium text-gray-500 w-40">Fecha / Hora</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-medium text-gray-500">Acción</th>
+                      <th className="text-left px-4 py-2.5 text-xs font-medium text-gray-500 w-20">Origen</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {entries.map((e) => (
+                      <tr key={e.id} className="border-b border-gray-50 hover:bg-gray-50">
+                        <td className="px-4 py-2.5 text-xs text-gray-400 whitespace-nowrap">{formatTimestamp(e.ts)}</td>
+                        <td className="px-4 py-2.5 text-gray-700">{e.action}</td>
+                        <td className="px-4 py-2.5">
+                          <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                            e.category === 'admin'
+                              ? 'bg-gray-100 text-gray-600'
+                              : 'bg-blue-50 text-blue-600'
+                          }`}>
+                            {e.category === 'admin' ? 'Admin' : 'Mapa'}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}

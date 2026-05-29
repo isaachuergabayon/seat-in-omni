@@ -129,3 +129,32 @@ export function getWeekDates(dateStr: string): string[] {
     return formatDate(d)
   })
 }
+
+// Si la fecha cae en fin de semana, avanza al lunes siguiente
+export function skipWeekend(dateStr: string): string {
+  const d = parseDate(dateStr)
+  const day = d.getDay()
+  if (day === 6) d.setDate(d.getDate() + 2) // sábado → lunes
+  if (day === 0) d.setDate(d.getDate() + 1) // domingo → lunes
+  return formatDate(d)
+}
+
+// Si la fecha cae en fin de semana, retrocede al viernes anterior
+export function skipWeekendBack(dateStr: string): string {
+  const d = parseDate(dateStr)
+  const day = d.getDay()
+  if (day === 6) d.setDate(d.getDate() - 1) // sábado → viernes
+  if (day === 0) d.setDate(d.getDate() - 2) // domingo → viernes
+  return formatDate(d)
+}
+
+// Formatea timestamp ms a "dd/mm/yyyy HH:MM"
+export function formatTimestamp(ts: number): string {
+  const d = new Date(ts)
+  const dd = String(d.getDate()).padStart(2, '0')
+  const mm = String(d.getMonth() + 1).padStart(2, '0')
+  const yyyy = d.getFullYear()
+  const hh = String(d.getHours()).padStart(2, '0')
+  const min = String(d.getMinutes()).padStart(2, '0')
+  return `${dd}/${mm}/${yyyy} ${hh}:${min}`
+}

@@ -8,6 +8,7 @@ import WeekView from '../components/WeekView'
 import { formatDate, formatDisplayDate, resolveSeatsForDate } from '../utils'
 import { Assignment, SeatStatus } from '../types'
 import { usePresence } from '../hooks/usePresence'
+import { useChangeLog } from '../hooks/useChangeLog'
 
 type ViewMode = 'day' | 'week'
 
@@ -16,6 +17,7 @@ export default function Home() {
   const [date, setDate] = useState(formatDate(new Date()))
   const [viewMode, setViewMode] = useState<ViewMode>('day')
   const onlineCount = usePresence()
+  const { logChange } = useChangeLog()
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -40,6 +42,8 @@ export default function Home() {
       assignments.push(newAssignment)
     }
     setData({ ...data, assignments })
+    const personName = personId ? (data.people.find((p) => p.id === personId)?.name ?? personId) : '—'
+    logChange(`${seatId} → ${status} (${personName}) · ${d}`, 'map')
   }
 
   return (
