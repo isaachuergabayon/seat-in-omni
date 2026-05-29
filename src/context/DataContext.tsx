@@ -2,6 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react'
 import { ref, onValue, set } from 'firebase/database'
 import { db } from '../firebase'
 import { AppData } from '../types'
+import { formatDate } from '../utils'
 
 interface FirebaseData {
   assignments: AppData['assignments']
@@ -73,9 +74,10 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
 
   const setData = (newData: AppData) => {
     if (!baseData) return
+    const today = formatDate(new Date())
     const baseIds = new Set(baseData.people.map((p) => p.id))
     const payload: FirebaseData = {
-      assignments: newData.assignments ?? [],
+      assignments: (newData.assignments ?? []).filter((a) => a.date >= today),
       specialDays: newData.specialDays ?? [],
       allTemplates: newData.templates ?? [],
       extraPeople: newData.people.filter((p) => !baseIds.has(p.id)),
