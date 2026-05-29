@@ -4,14 +4,21 @@ import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
 import OfficeIcon from '../components/OfficeIcon'
+import SeatAlert from '../components/SeatAlert'
+import WeekView from '../components/WeekView'
 import { formatDate, formatDisplayDate, resolveSeatsForDate } from '../utils'
 import { Assignment, SeatStatus } from '../types'
 import { usePresence } from '../hooks/usePresence'
+import { useMyPerson } from '../hooks/useMyPerson'
+
+type ViewMode = 'day' | 'week'
 
 export default function Home() {
   const { data, loading, setData } = useData()
   const [date, setDate] = useState(formatDate(new Date()))
+  const [viewMode, setViewMode] = useState<ViewMode>('day')
   const onlineCount = usePresence()
+  const { myPersonId, setMyPersonId } = useMyPerson()
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -25,9 +32,10 @@ export default function Home() {
   const techFree = techSeats.filter((s) => s.status === 'free').length
   const techOccupied = techSeats.filter((s) => s.status === 'occupied').length
 
-  const handleUpdate = (seatId: string, status: SeatStatus, personId: string | null) => {
-    const existing = data.assignments.findIndex((a) => a.seatId === seatId && a.date === date)
-    const newAssignment: Assignment = { seatId, date, personId, status }
+  const handleUpdate = (seatId: string, status: SeatStatus, personId: string | null, targetDate?: string) => {
+    const d = targetDate ?? date
+    const existing = data.assignments.findIndex((a) => a.seatId === seatId && a.date === d)
+    const newAssignment: Assignment = { seatId, date: d, personId, status }
     const assignments = [...data.assignments]
     if (existing >= 0) {
       assignments[existing] = newAssignment
@@ -36,6 +44,8 @@ export default function Home() {
     }
     setData({ ...data, assignments })
   }
+
+  const sortedPeople = data.people.slice().sort((a, b) => a.name.localeCompare(b.name))
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -61,32 +71,71 @@ export default function Home() {
             </Link>
           </div>
         </div>
-        <div className="flex items-center gap-4 text-sm mt-2 flex-wrap">
-          <span className="text-xs text-gray-500 font-medium">.COM:</span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
-            <span className="text-gray-600">{comFree} libres</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-            <span className="text-gray-600">{comOccupied} ocupados</span>
-          </span>
-          <span className="text-xs text-gray-400">|</span>
-          <span className="text-xs text-gray-500 font-medium">TECH:</span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
-            <span className="text-gray-600">{techFree} libres</span>
-          </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-            <span className="text-gray-600">{techOccupied} ocupados</span>
-          </span>
+
+        {/* Contadores + selector identidad */}
+        <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
+          <div className="flex items-center gap-4 text-sm flex-wrap">
+            <span className="text-xs text-gray-500 font-medium">.COM:</span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+              <span className="text-gray-600">{comFree} libres</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+              <span className="text-gray-600">{comOccupied} ocupados</span>
+            </span>
+            <span className="text-xs text-gray-400">|</span>
+            <span className="text-xs text-gray-500 font-medium">TECH:</span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+              <span className="text-gray-600">{techFree} libres</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+              <span className="text-gray-600">{techOccupied} ocupados</span>
+            </span>
+          </div>
+
+          {/* Selector de identidad */}
+          <select
+            value={myPersonId ?? ''}
+            onChange={(e) => setMyPersonId(e.target.value || null)}
+            className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-gray-600 bg-white"
+          >
+            <option value="">¿Quién eres?</option>
+            {sortedPeople.map((p) => (
+              <option key={p.id} value={p.id}>{p.name}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Toggle día / semana */}
+        <div className="flex gap-1 bg-gray-100 p-1 rounded-xl w-fit mt-3">
+          {(['day', 'week'] as ViewMode[]).map((mode) => (
+            <button
+              key={mode}
+              onClick={() => setViewMode(mode)}
+              className={`px-4 py-1 rounded-lg text-xs font-medium transition ${
+                viewMode === mode ? 'bg-white shadow text-gray-800' : 'text-gray-500 hover:text-gray-700'
+              }`}
+            >
+              {mode === 'day' ? 'Día' : 'Semana'}
+            </button>
+          ))}
         </div>
       </header>
 
+      <SeatAlert myPersonId={myPersonId} resolvedSeats={resolvedSeats} people={data.people} date={date} />
+
       <main>
-        <DateNavigator date={date} onChange={setDate} />
-        <OfficeMap seats={resolvedSeats} people={data.people} onUpdate={handleUpdate} />
+        {viewMode === 'day' ? (
+          <>
+            <DateNavigator date={date} onChange={setDate} />
+            <OfficeMap seats={resolvedSeats} people={data.people} onUpdate={handleUpdate} />
+          </>
+        ) : (
+          <WeekView data={data} currentDate={date} onUpdate={handleUpdate} />
+        )}
 
         {/* Leyenda */}
         <div className="flex justify-center gap-6 mt-6 pb-8 text-xs text-gray-500">

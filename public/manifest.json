@@ -1,0 +1,15 @@
+{
+  "name": "Mapa de Sitios - Omni",
+  "short_name": "Mapa Omni",
+  "start_url": "/seat-in-omni/",
+  "display": "standalone",
+  "background_color": "#f9fafb",
+  "theme_color": "#1f2937",
+  "icons": [
+    {
+      "src": "/seat-in-omni/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -117,3 +117,15 @@ export function formatDisplayDate(dateStr: string): string {
 export function generateId(): string {
   return Math.random().toString(36).slice(2, 10)
 }
+
+export function getWeekDates(dateStr: string): string[] {
+  const date = parseDate(dateStr)
+  const day = date.getDay() === 0 ? 7 : date.getDay() // 1=lunes ... 7=domingo
+  const monday = new Date(date)
+  monday.setDate(date.getDate() - (day - 1))
+  return Array.from({ length: 5 }, (_, i) => {
+    const d = new Date(monday)
+    d.setDate(monday.getDate() + i)
+    return formatDate(d)
+  })
+}
