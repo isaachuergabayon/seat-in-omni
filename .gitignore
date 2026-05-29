@@ -19,3 +19,6 @@ npm-debug.log*
 
 # vite cache
 .vite/
+
+# agent docs (local only)
+.aicontext/
