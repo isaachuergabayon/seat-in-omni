@@ -117,13 +117,3 @@ export function formatDisplayDate(dateStr: string): string {
 export function generateId(): string {
   return Math.random().toString(36).slice(2, 10)
 }
-
-export function exportDataAsJson(data: AppData): void {
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = 'data.json'
-  a.click()
-  URL.revokeObjectURL(url)
-}

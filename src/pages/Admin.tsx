@@ -1,10 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useData } from '../context/DataContext'
-import { exportDataAsJson, formatDate, generateId, resolveSeatsForDate, resolveSeatsForTemplate } from '../utils'
+import { formatDate, generateId, resolveSeatsForDate, resolveSeatsForTemplate } from '../utils'
 import { AppData, Assignment, SeatStatus, TemplateAssignment } from '../types'
 import OfficeMap from '../components/OfficeMap'
-import { publishToGitHub, getStoredToken } from '../api/githubCommit'
 
 type Tab = 'week' | 'exceptions' | 'people' | 'specialDays' | 'templates'
 
@@ -24,9 +23,6 @@ export default function Admin() {
   const [activeWeekday, setActiveWeekday] = useState<string>('monday')
   const [date, setDate] = useState(formatDate(new Date()))
   const [saved, setSaved] = useState(false)
-  const [publishing, setPublishing] = useState(false)
-  const [publishStatus, setPublishStatus] = useState<'idle' | 'ok' | 'error'>('idle')
-  const [publishError, setPublishError] = useState('')
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -36,30 +32,6 @@ export default function Admin() {
     setData(newData)
     setSaved(true)
     setTimeout(() => setSaved(false), 2000)
-  }
-
-  const handlePublish = async () => {
-    const token = getStoredToken()
-    if (!token) {
-      setPublishError('No hay token configurado. Ve a la pestaña Configuración.')
-      setPublishStatus('error')
-      setTimeout(() => setPublishStatus('idle'), 4000)
-      return
-    }
-    setPublishing(true)
-    setPublishStatus('idle')
-    try {
-      const json = JSON.stringify(data, null, 2)
-      await publishToGitHub(json, token)
-      setPublishStatus('ok')
-      setTimeout(() => setPublishStatus('idle'), 3000)
-    } catch (e) {
-      setPublishError(e instanceof Error ? e.message : 'Error desconocido')
-      setPublishStatus('error')
-      setTimeout(() => setPublishStatus('idle'), 5000)
-    } finally {
-      setPublishing(false)
-    }
   }
 
   // ─── PEOPLE ───────────────────────────────────────────────────────────────
@@ -165,21 +137,6 @@ export default function Admin() {
           </div>
           <div className="flex items-center gap-2">
             {saved && <span className="text-green-400 text-xs">✓ Guardado</span>}
-            {publishStatus === 'ok' && <span className="text-green-400 text-xs">✓ Publicado</span>}
-            {publishStatus === 'error' && <span className="text-red-400 text-xs max-w-[160px] truncate" title={publishError}>{publishError}</span>}
-            <button
-              onClick={() => exportDataAsJson(data)}
-              className="px-2.5 py-1.5 bg-blue-500 hover:bg-blue-600 rounded-lg text-xs transition"
-            >
-              Exportar
-            </button>
-            <button
-              onClick={handlePublish}
-              disabled={publishing}
-              className="px-2.5 py-1.5 bg-green-600 hover:bg-green-500 rounded-lg text-xs transition disabled:opacity-40"
-            >
-              {publishing ? 'Publicando...' : 'Publicar'}
-            </button>
             <Link
               to="/"
               className="px-2.5 py-1.5 bg-gray-600 hover:bg-gray-500 rounded-lg text-xs transition"
