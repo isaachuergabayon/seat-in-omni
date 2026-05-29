@@ -12,3 +12,10 @@ dist/
 # editor
 .DS_Store
 *.local
+
+# logs
+*.log
+npm-debug.log*
+
+# vite cache
+.vite/
