@@ -4,12 +4,10 @@ import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
 import OfficeIcon from '../components/OfficeIcon'
-import SeatAlert from '../components/SeatAlert'
 import WeekView from '../components/WeekView'
 import { formatDate, formatDisplayDate, resolveSeatsForDate } from '../utils'
 import { Assignment, SeatStatus } from '../types'
 import { usePresence } from '../hooks/usePresence'
-import { useMyPerson } from '../hooks/useMyPerson'
 
 type ViewMode = 'day' | 'week'
 
@@ -18,7 +16,6 @@ export default function Home() {
   const [date, setDate] = useState(formatDate(new Date()))
   const [viewMode, setViewMode] = useState<ViewMode>('day')
   const onlineCount = usePresence()
-  const { myPersonId, setMyPersonId } = useMyPerson()
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -45,8 +42,6 @@ export default function Home() {
     setData({ ...data, assignments })
   }
 
-  const sortedPeople = data.people.slice().sort((a, b) => a.name.localeCompare(b.name))
-
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-4 py-3">
@@ -72,41 +67,27 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Contadores + selector identidad */}
-        <div className="flex items-center justify-between mt-2 flex-wrap gap-2">
-          <div className="flex items-center gap-4 text-sm flex-wrap">
-            <span className="text-xs text-gray-500 font-medium">.COM:</span>
-            <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
-              <span className="text-gray-600">{comFree} libres</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-              <span className="text-gray-600">{comOccupied} ocupados</span>
-            </span>
-            <span className="text-xs text-gray-400">|</span>
-            <span className="text-xs text-gray-500 font-medium">TECH:</span>
-            <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
-              <span className="text-gray-600">{techFree} libres</span>
-            </span>
-            <span className="flex items-center gap-1">
-              <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
-              <span className="text-gray-600">{techOccupied} ocupados</span>
-            </span>
-          </div>
-
-          {/* Selector de identidad */}
-          <select
-            value={myPersonId ?? ''}
-            onChange={(e) => setMyPersonId(e.target.value || null)}
-            className="text-xs border border-gray-200 rounded-lg px-2 py-1.5 text-gray-600 bg-white"
-          >
-            <option value="">¿Quién eres?</option>
-            {sortedPeople.map((p) => (
-              <option key={p.id} value={p.id}>{p.name}</option>
-            ))}
-          </select>
+        {/* Contadores */}
+        <div className="flex items-center gap-4 text-sm mt-2 flex-wrap">
+          <span className="text-xs text-gray-500 font-medium">.COM:</span>
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+            <span className="text-gray-600">{comFree} libres</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+            <span className="text-gray-600">{comOccupied} ocupados</span>
+          </span>
+          <span className="text-xs text-gray-400">|</span>
+          <span className="text-xs text-gray-500 font-medium">TECH:</span>
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+            <span className="text-gray-600">{techFree} libres</span>
+          </span>
+          <span className="flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+            <span className="text-gray-600">{techOccupied} ocupados</span>
+          </span>
         </div>
 
         {/* Toggle día / semana */}
@@ -124,8 +105,6 @@ export default function Home() {
           ))}
         </div>
       </header>
-
-      <SeatAlert myPersonId={myPersonId} resolvedSeats={resolvedSeats} people={data.people} date={date} />
 
       <main>
         {viewMode === 'day' ? (
