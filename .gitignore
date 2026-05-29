@@ -19,3 +19,6 @@ npm-debug.log*
 
 # vite cache
 .vite/
+
+# agent docs with sensitive info
+.aicontext/agent_docs/security-constraints.md
