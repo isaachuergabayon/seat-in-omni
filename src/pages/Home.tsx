@@ -4,12 +4,14 @@ import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
 import OfficeIcon from '../components/OfficeIcon'
-import { formatDate, resolveSeatsForDate } from '../utils'
+import { formatDate, formatDisplayDate, resolveSeatsForDate } from '../utils'
 import { Assignment, SeatStatus } from '../types'
+import { usePresence } from '../hooks/usePresence'
 
 export default function Home() {
   const { data, loading, setData } = useData()
   const [date, setDate] = useState(formatDate(new Date()))
+  const onlineCount = usePresence()
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -43,15 +45,21 @@ export default function Home() {
             <OfficeIcon size={28} />
             <div>
               <h1 className="text-lg font-bold text-gray-800">Mapa de Sitios</h1>
-              <p className="text-xs text-gray-400">Omni Office</p>
+              <p className="text-xs text-gray-400 capitalize">{formatDisplayDate(date)}</p>
             </div>
           </div>
-          <Link
-            to="/admin"
-            className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
-          >
-            Admin
-          </Link>
+          <div className="flex items-center gap-3">
+            <span className="flex items-center gap-1.5 text-xs text-gray-400">
+              <span className="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse" />
+              {onlineCount} {onlineCount === 1 ? 'persona' : 'personas'}
+            </span>
+            <Link
+              to="/admin"
+              className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
+            >
+              Admin
+            </Link>
+          </div>
         </div>
         <div className="flex items-center gap-4 text-sm mt-2 flex-wrap">
           <span className="text-xs text-gray-500 font-medium">.COM:</span>
