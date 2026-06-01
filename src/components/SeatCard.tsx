@@ -51,9 +51,8 @@ export default function SeatCard({ seat, onUpdate, people = [], assignedPersonId
       <div
         onClick={() => setOpen((v) => !v)}
         className={`relative border-2 rounded-lg px-2 py-2 text-center text-xs font-semibold shadow-sm w-full transition
-          ${style}
+          ${highlighted ? 'bg-yellow-300 border-yellow-500 text-yellow-900 shadow-yellow-200 shadow-lg scale-105' : style}
           ${isEditable ? 'cursor-pointer hover:brightness-95 active:scale-95' : 'cursor-default'}
-          ${highlighted ? 'ring-2 ring-yellow-400 ring-offset-1 brightness-95' : ''}
         `}
       >
         {seat.type === 'rotativo' && (
