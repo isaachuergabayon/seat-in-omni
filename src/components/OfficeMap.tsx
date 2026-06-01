@@ -5,6 +5,7 @@ interface Props {
   seats: ResolvedSeat[]
   people?: Person[]
   onUpdate?: (seatId: string, status: SeatStatus, personId: string | null) => void
+  highlightPersonId?: string | null
 }
 
 const COM_DESKS = [
@@ -13,11 +14,10 @@ const COM_DESKS = [
   { id: 'right' as const, label: 'Mesa derecha' },
 ]
 
-export default function OfficeMap({ seats, people, onUpdate }: Props) {
+export default function OfficeMap({ seats, people, onUpdate, highlightPersonId }: Props) {
   const comSeats = seats.filter((s) => s.building === 'com')
   const techSeats = seats.filter((s) => s.building === 'tech')
 
-  // Set de personIds ya asignados (ocupados) — directo desde ResolvedSeat.personId
   const assignedPersonIds = new Set(
     seats
       .filter((s) => s.status === 'occupied' && s.personId)
@@ -41,6 +41,7 @@ export default function OfficeMap({ seats, people, onUpdate }: Props) {
                 people={people}
                 assignedPersonIds={assignedPersonIds}
                 onUpdate={onUpdate}
+                highlightPersonId={highlightPersonId}
               />
             </div>
           ))}
@@ -62,6 +63,7 @@ export default function OfficeMap({ seats, people, onUpdate }: Props) {
                 people={people}
                 assignedPersonIds={assignedPersonIds}
                 onUpdate={onUpdate}
+                highlightPersonId={highlightPersonId}
               />
             </div>
           </div>

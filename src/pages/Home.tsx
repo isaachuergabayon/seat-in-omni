@@ -1,10 +1,12 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
 import OfficeMap from '../components/OfficeMap'
 import OfficeIcon from '../components/OfficeIcon'
 import WeekView from '../components/WeekView'
+import DayNote from '../components/DayNote'
+import TomorrowPanel from '../components/TomorrowPanel'
 import { formatDate, formatDisplayDate, resolveSeatsForDate } from '../utils'
 import { Assignment, SeatStatus } from '../types'
 import { usePresence } from '../hooks/usePresence'
@@ -18,6 +20,15 @@ export default function Home() {
   const [viewMode, setViewMode] = useState<ViewMode>('day')
   const onlineCount = usePresence()
   const { logChange } = useChangeLog()
+
+  // Buscador de persona
+  const [searchQuery, setSearchQuery] = useState('')
+  const [highlightPersonId, setHighlightPersonId] = useState<string | null>(null)
+  const [searchOpen, setSearchOpen] = useState(false)
+  const searchInputRef = useRef<HTMLInputElement>(null)
+
+  // ¿Quién viene mañana?
+  const [showTomorrow, setShowTomorrow] = useState(false)
 
   if (loading || !data) {
     return <div className="flex items-center justify-center h-screen text-gray-400">Cargando...</div>
@@ -46,6 +57,25 @@ export default function Home() {
     logChange(`${seatId} → ${status} (${personName}) · ${d}`, 'map')
   }
 
+  // Sugerencias de búsqueda
+  const suggestions = searchQuery.trim().length > 0
+    ? data.people.filter((p) =>
+        p.name.toLowerCase().includes(searchQuery.toLowerCase())
+      ).slice(0, 5)
+    : []
+
+  const handleSelectPerson = (personId: string) => {
+    setHighlightPersonId(personId)
+    setSearchQuery(data.people.find((p) => p.id === personId)?.name ?? '')
+    setSearchOpen(false)
+  }
+
+  const clearSearch = () => {
+    setSearchQuery('')
+    setHighlightPersonId(null)
+    setSearchOpen(false)
+  }
+
   return (
     <div className="min-h-screen bg-gray-50">
       <header className="bg-white border-b border-gray-200 px-4 py-3">
@@ -57,11 +87,34 @@ export default function Home() {
               <p className="text-xs text-gray-400 capitalize">{formatDisplayDate(date)}</p>
             </div>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <span className="flex items-center gap-1.5 text-xs text-gray-400">
               <span className="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse" />
               {onlineCount} {onlineCount === 1 ? 'persona' : 'personas'}
             </span>
+            {/* Botón ¿quién viene mañana? */}
+            <button
+              onClick={() => setShowTomorrow(true)}
+              title="¿Quién viene mañana?"
+              className="px-2 py-1.5 text-gray-500 hover:text-gray-800 hover:bg-gray-100 rounded-lg transition text-sm"
+            >
+              🌅
+            </button>
+            {/* Buscador lupa */}
+            <button
+              onClick={() => {
+                setSearchOpen((v) => !v)
+                setTimeout(() => searchInputRef.current?.focus(), 50)
+              }}
+              title="Buscar persona"
+              className={`px-2 py-1.5 rounded-lg transition text-sm ${
+                searchOpen || highlightPersonId
+                  ? 'bg-yellow-100 text-yellow-700'
+                  : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
+              }`}
+            >
+              🔍
+            </button>
             <Link
               to="/admin"
               className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
@@ -70,6 +123,42 @@ export default function Home() {
             </Link>
           </div>
         </div>
+
+        {/* Buscador expandible */}
+        {searchOpen && (
+          <div className="relative mt-2">
+            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5">
+              <span className="text-gray-400 text-sm">🔍</span>
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  setHighlightPersonId(null)
+                }}
+                placeholder="¿Dónde se sienta…?"
+                className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
+              />
+              {(searchQuery || highlightPersonId) && (
+                <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600 text-xs">✕</button>
+              )}
+            </div>
+            {suggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
+                {suggestions.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => handleSelectPerson(p.id)}
+                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
+                  >
+                    {p.name}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Contadores */}
         <div className="flex items-center gap-4 text-sm mt-2 flex-wrap">
@@ -113,8 +202,14 @@ export default function Home() {
       <main>
         {viewMode === 'day' ? (
           <>
-            <DateNavigator date={date} onChange={setDate} />
-            <OfficeMap seats={resolvedSeats} people={data.people} onUpdate={handleUpdate} />
+            <DateNavigator date={date} onChange={(d) => { setDate(d); setHighlightPersonId(null) }} />
+            <DayNote date={date} />
+            <OfficeMap
+              seats={resolvedSeats}
+              people={data.people}
+              onUpdate={handleUpdate}
+              highlightPersonId={highlightPersonId}
+            />
           </>
         ) : (
           <WeekView data={data} currentDate={date} onUpdate={handleUpdate} />
@@ -140,6 +235,15 @@ export default function Home() {
           </span>
         </div>
       </main>
+
+      {/* Panel ¿quién viene mañana? */}
+      {showTomorrow && (
+        <TomorrowPanel
+          data={data}
+          onClose={() => setShowTomorrow(false)}
+          onNavigate={setDate}
+        />
+      )}
     </div>
   )
 }

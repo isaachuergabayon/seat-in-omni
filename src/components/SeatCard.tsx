@@ -6,6 +6,7 @@ interface Props {
   onUpdate?: (seatId: string, status: SeatStatus, personId: string | null) => void
   people?: Person[]
   assignedPersonIds?: Set<string>
+  highlighted?: boolean
 }
 
 const statusStyles: Record<string, string> = {
@@ -20,13 +21,19 @@ const statusLabel: Record<string, string> = {
   absent: 'Ausente',
 }
 
-export default function SeatCard({ seat, onUpdate, people = [], assignedPersonIds = new Set() }: Props) {
+export default function SeatCard({ seat, onUpdate, people = [], assignedPersonIds = new Set(), highlighted = false }: Props) {
   const [open, setOpen] = useState(false)
   const ref = useRef<HTMLDivElement>(null)
 
   const style = statusStyles[seat.status]
   const label = seat.personName ?? seat.label ?? 'Libre'
   const isEditable = !!onUpdate
+
+  useEffect(() => {
+    if (highlighted && ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+  }, [highlighted])
 
   useEffect(() => {
     if (!open) return
@@ -46,6 +53,7 @@ export default function SeatCard({ seat, onUpdate, people = [], assignedPersonId
         className={`relative border-2 rounded-lg px-2 py-2 text-center text-xs font-semibold shadow-sm w-full transition
           ${style}
           ${isEditable ? 'cursor-pointer hover:brightness-95 active:scale-95' : 'cursor-default'}
+          ${highlighted ? 'ring-2 ring-yellow-400 ring-offset-1 brightness-95' : ''}
         `}
       >
         {seat.type === 'rotativo' && (
