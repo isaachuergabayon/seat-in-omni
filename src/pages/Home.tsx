@@ -102,7 +102,8 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <span className="flex items-center gap-1 text-xs text-gray-400 whitespace-nowrap">
               <span className="w-2 h-2 rounded-full bg-green-400 inline-block animate-pulse" />
-              {onlineCount} en línea
+              <span className="md:hidden">{onlineCount} en línea</span>
+              <span className="hidden md:inline">{onlineCount} {onlineCount === 1 ? 'persona' : 'personas'}</span>
             </span>
             {/* Botón ¿quién viene mañana? */}
             <button
@@ -177,22 +178,44 @@ export default function Home() {
 
         {/* Contadores */}
         <div className="flex items-center gap-3 text-xs mt-2 whitespace-nowrap">
-          <span className="flex items-center gap-1">
+          {/* Mobile: solo puntos + números */}
+          <span className="flex items-center gap-1 md:hidden">
             <span className="w-2.5 h-2.5 rounded-full bg-green-400 inline-block" />
             <span className="text-gray-600">{comFree}</span>
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 md:hidden">
             <span className="w-2.5 h-2.5 rounded-full bg-red-400 inline-block" />
             <span className="text-gray-600">{comOccupied}</span>
           </span>
-          <span className="text-gray-300">|</span>
-          <span className="flex items-center gap-1">
+          <span className="text-gray-300 md:hidden">|</span>
+          <span className="flex items-center gap-1 md:hidden">
             <span className="w-2.5 h-2.5 rounded-full bg-green-400 inline-block" />
             <span className="text-gray-600">{techFree}</span>
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1 md:hidden">
             <span className="w-2.5 h-2.5 rounded-full bg-red-400 inline-block" />
             <span className="text-gray-600">{techOccupied}</span>
+          </span>
+
+          {/* Desktop: etiquetas + textos completos */}
+          <span className="hidden md:inline text-gray-500 font-medium">.COM:</span>
+          <span className="hidden md:flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+            <span className="text-gray-600">{comFree} libres</span>
+          </span>
+          <span className="hidden md:flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+            <span className="text-gray-600">{comOccupied} ocupados</span>
+          </span>
+          <span className="hidden md:inline text-gray-400">|</span>
+          <span className="hidden md:inline text-gray-500 font-medium">TECH:</span>
+          <span className="hidden md:flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-green-400 inline-block" />
+            <span className="text-gray-600">{techFree} libres</span>
+          </span>
+          <span className="hidden md:flex items-center gap-1">
+            <span className="w-3 h-3 rounded-full bg-red-400 inline-block" />
+            <span className="text-gray-600">{techOccupied} ocupados</span>
           </span>
         </div>
 
