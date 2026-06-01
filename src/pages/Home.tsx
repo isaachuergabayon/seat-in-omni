@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useData } from '../context/DataContext'
 import DateNavigator from '../components/DateNavigator'
@@ -26,6 +26,18 @@ export default function Home() {
   const [highlightPersonId, setHighlightPersonId] = useState<string | null>(null)
   const [searchOpen, setSearchOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
+  const searchContainerRef = useRef<HTMLDivElement>(null)
+
+  // Cerrar dropdown al hacer click fuera
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (searchContainerRef.current && !searchContainerRef.current.contains(e.target as Node)) {
+        setSearchOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [])
 
   // ¿Quién viene mañana?
   const [showTomorrow, setShowTomorrow] = useState(false)
@@ -100,21 +112,6 @@ export default function Home() {
             >
               🌅
             </button>
-            {/* Buscador lupa */}
-            <button
-              onClick={() => {
-                setSearchOpen((v) => !v)
-                setTimeout(() => searchInputRef.current?.focus(), 50)
-              }}
-              title="Buscar persona"
-              className={`px-2 py-1.5 rounded-lg transition text-sm ${
-                searchOpen || highlightPersonId
-                  ? 'bg-yellow-100 text-yellow-700'
-                  : 'text-gray-500 hover:text-gray-800 hover:bg-gray-100'
-              }`}
-            >
-              🔍
-            </button>
             <Link
               to="/admin"
               className="px-3 py-1.5 bg-gray-800 text-white rounded-lg text-xs hover:bg-gray-700 transition"
@@ -124,11 +121,17 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Buscador expandible */}
-        {searchOpen && (
-          <div className="relative mt-2">
-            <div className="flex items-center gap-2 bg-gray-50 border border-gray-200 rounded-xl px-3 py-1.5">
-              <span className="text-gray-400 text-sm">🔍</span>
+        {/* Buscador — siempre visible en vista día */}
+        {viewMode === 'day' && (
+          <div className="relative mt-3" ref={searchContainerRef}>
+            <div className={`flex items-center gap-2 border rounded-xl px-3 py-2 transition-colors ${
+              highlightPersonId
+                ? 'bg-yellow-50 border-yellow-400'
+                : 'bg-gray-50 border-gray-200 focus-within:border-gray-400 focus-within:bg-white'
+            }`}>
+              <svg className={`w-4 h-4 flex-shrink-0 ${highlightPersonId ? 'text-yellow-500' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M17 11A6 6 0 1 1 5 11a6 6 0 0 1 12 0z" />
+              </svg>
               <input
                 ref={searchInputRef}
                 type="text"
@@ -136,22 +139,34 @@ export default function Home() {
                 onChange={(e) => {
                   setSearchQuery(e.target.value)
                   setHighlightPersonId(null)
+                  setSearchOpen(true)
                 }}
-                placeholder="¿Dónde se sienta…?"
-                className="flex-1 bg-transparent text-sm text-gray-700 placeholder-gray-400 outline-none"
+                onFocus={() => setSearchOpen(true)}
+                placeholder="Buscar persona en el mapa…"
+                className={`flex-1 bg-transparent text-sm placeholder-gray-400 outline-none ${
+                  highlightPersonId ? 'text-yellow-800 font-medium' : 'text-gray-700'
+                }`}
               />
               {(searchQuery || highlightPersonId) && (
-                <button onClick={clearSearch} className="text-gray-400 hover:text-gray-600 text-xs">✕</button>
+                <button
+                  onClick={clearSearch}
+                  className="w-5 h-5 flex items-center justify-center rounded-full bg-gray-200 hover:bg-gray-300 text-gray-500 text-xs transition flex-shrink-0"
+                >
+                  ✕
+                </button>
               )}
             </div>
-            {suggestions.length > 0 && (
+            {searchOpen && suggestions.length > 0 && (
               <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-50 overflow-hidden">
                 {suggestions.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => handleSelectPerson(p.id)}
-                    className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition"
+                    className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-yellow-50 hover:text-yellow-800 transition flex items-center gap-2"
                   >
+                    <span className="w-6 h-6 rounded-full bg-gray-200 text-gray-600 text-xs font-bold flex items-center justify-center flex-shrink-0">
+                      {p.name.charAt(0).toUpperCase()}
+                    </span>
                     {p.name}
                   </button>
                 ))}
