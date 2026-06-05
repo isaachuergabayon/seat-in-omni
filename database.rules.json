@@ -1,0 +1,23 @@
+{
+  "rules": {
+    "seatInOmni": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "seatInOmni_presence": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "seatInOmni_log": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "seatInOmni_notes": {
+      ".read": "auth != null",
+      ".write": "auth != null",
+      "$date": {
+        ".validate": "newData.isString() && newData.val().length <= 1000"
+      }
+    }
+  }
+}

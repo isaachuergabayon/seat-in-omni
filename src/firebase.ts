@@ -1,5 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getDatabase } from 'firebase/database'
+import { getAuth, signInAnonymously } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -13,3 +14,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig)
 export const db = getDatabase(app)
+export const auth = getAuth(app)
+
+// Autenticación anónima requerida por las reglas de seguridad de Firebase.
+// Cada visitante obtiene un token silenciosamente; las reglas exigen auth != null.
+signInAnonymously(auth).catch(console.error)
