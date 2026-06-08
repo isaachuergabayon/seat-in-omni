@@ -195,7 +195,7 @@ The app uses **SemVer + `release-it`** for fully automated releases.
 npm run release       # interactivo: muestra bump propuesto, pide confirmación
 npm run release:dry   # previsualiza sin ejecutar nada
 ```
-`GH_TOKEN` se inyecta automáticamente desde `$ITX_GITHUB_PAT` (definido en `~/.zshrc`).
+`GITHUB_TOKEN` se inyecta automáticamente desde `$ITX_GITHUB_PAT` (definido en `~/.zshrc`).
 
 ### What `npm run release` does
 1. Calcula el bump analizando commits desde el último tag
