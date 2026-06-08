@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { ref, onValue, set } from 'firebase/database'
-import { db } from '../firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { db, auth } from '../firebase'
 import { AppData } from '../types'
 import { formatDate } from '../utils'
 
@@ -35,15 +36,22 @@ export function DataProvider({ children }: { children: React.ReactNode }) {
       .then((base: AppData) => setBaseData(base))
   }, [])
 
-  // 2. Suscribirse a Firebase en tiempo real
+  // 2. Suscribirse a Firebase en tiempo real (esperar auth, igual que usePresence)
   useEffect(() => {
-    const fbRef = ref(db, 'seatInOmni')
-    const unsub = onValue(fbRef, (snapshot) => {
-      const val = snapshot.val()
-      setFirebaseData(val ?? {})
-      setLoading(false)
+    let fbUnsub: (() => void) | null = null
+    const authUnsub = onAuthStateChanged(auth, (user) => {
+      if (!user || fbUnsub) return
+      const fbRef = ref(db, 'seatInOmni')
+      fbUnsub = onValue(fbRef, (snapshot) => {
+        const val = snapshot.val()
+        setFirebaseData(val ?? {})
+        setLoading(false)
+      })
     })
-    return () => unsub()
+    return () => {
+      authUnsub()
+      fbUnsub?.()
+    }
   }, [])
 
   // 3. Merge: seed + Firebase
