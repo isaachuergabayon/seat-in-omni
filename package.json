@@ -7,8 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "release": "GH_TOKEN=$ITX_GITHUB_PAT release-it",
-    "release:dry": "GH_TOKEN=$ITX_GITHUB_PAT release-it --dry-run"
+    "release": "GITHUB_TOKEN=$ITX_GITHUB_PAT release-it",
+    "release:dry": "GITHUB_TOKEN=$ITX_GITHUB_PAT release-it --dry-run"
   },
   "dependencies": {
     "firebase": "^12.14.0",
