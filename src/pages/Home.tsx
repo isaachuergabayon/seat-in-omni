@@ -95,7 +95,10 @@ export default function Home() {
           <div className="flex items-center gap-2">
             <OfficeIcon size={28} />
             <div>
-              <h1 className="text-lg font-bold text-gray-800">Mapa de Sitios</h1>
+              <div className="flex items-baseline gap-2">
+                <h1 className="text-lg font-bold text-gray-800">Mapa de Sitios</h1>
+                <span className="text-[10px] text-gray-300 font-mono tracking-wide">v{__APP_VERSION__}</span>
+              </div>
               <p className="text-xs text-gray-400 capitalize">{formatDisplayDate(date)}</p>
             </div>
           </div>

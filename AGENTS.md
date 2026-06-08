@@ -170,3 +170,42 @@ public/data.json      — Seed data: seats, people, weekday templates (never aut
 - **Full Firebase write on every seat click.** `handleUpdate` → `setData` → writes the entire `seatInOmni` ref. No partial updates.
 - **Admin panel has no "Publicar" button.** Agent docs that describe a GitHub publishing step are describing a removed feature. Tabs are: Semana tipo, Excepciones, Personas, Días Especiales, Plantillas, Historial.
 - **Node version:** `.tool-versions` uses `ivm-node 22.13.1`. Ensure your version manager supports this format.
+
+---
+
+## Release & Versioning
+
+The app uses **SemVer + `release-it`** for fully automated releases.
+
+### How version flows
+1. `package.json#version` is the source of truth.
+2. Vite injects it as `__APP_VERSION__` at build time via `process.env.npm_package_version` (set automatically by npm).
+3. Declared in `src/env.d.ts` as `declare const __APP_VERSION__: string`.
+4. Displayed in the app header alongside the title: `Mapa de Sitios  v1.0.0`.
+
+### Bump rules (from conventional commits since last tag)
+| Commit type | Bump |
+|---|---|
+| `fix:` | patch (`1.0.0 → 1.0.1`) |
+| `feat:` | minor (`1.0.0 → 1.1.0`) |
+| `feat!:` / `BREAKING CHANGE` | major (`1.0.0 → 2.0.0`) |
+
+### Release command
+```bash
+npm run release       # interactivo: muestra bump propuesto, pide confirmación
+npm run release:dry   # previsualiza sin ejecutar nada
+```
+`GH_TOKEN` se inyecta automáticamente desde `$ITX_GITHUB_PAT` (definido en `~/.zshrc`).
+
+### What `npm run release` does
+1. Calcula el bump analizando commits desde el último tag
+2. Actualiza `package.json#version`
+3. Genera/actualiza `CHANGELOG.md`
+4. Commit: `chore: release vX.Y.Z`
+5. Tag: `vX.Y.Z`
+6. Push commit + tag → dispara el workflow de GitHub Pages → app actualizada
+7. Crea GitHub Release con el changelog
+
+### Config files
+- `.release-it.json` — configuración de release-it (preset `angular`, GitHub releases activados)
+- `CHANGELOG.md` — generado y mantenido automáticamente, no editar a mano
